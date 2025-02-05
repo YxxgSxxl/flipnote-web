@@ -9,6 +9,12 @@ a web-based application that allows users to create, view, and share flipnote an
 - Share your flipnote animations with a unique URL
 - Import and export flipnote files for offline use
 
+## Informations
+
+It uses PWA to "appify" the experience.  
+
+It is programmed with Typescript for better quality code
+
 ## Installation
 
 To run the app locally, follow these steps:
