@@ -1,0 +1,42 @@
+.idle-cursor {
+    background-image: url('/img/cursors/idle.png');
+    width: 25px;
+    height: 25px;
+    background-size: cover;
+    position: fixed;
+    pointer-events: none;
+    cursor: default;
+    transform: translate(-10%, -10%);
+}
+
+.idle-cursor.hover-link {
+    background-image: url('/img/cursors/pointer.png');
+    transform: translate(-52%, -10%);
+    width: 25px;
+    height: 25px;
+}
+
+/* Brush cursor */
+.brush-cursor {
+    background-image: url('/img/cursors/brush.png');
+    transform: translate(0%, -100%);
+    width: 25px;
+    height: 25px;
+}
+
+/* Pencil cursor */
+.pencil-cursor {
+    background-image: url('/img/cursors/pencil.png');
+    transform: translate(0%, -100%);
+    width: 25px;
+    height: 25px;
+}
+
+/* Eraser cursor */
+.eraser-cursor {
+    background-image: url('/img/cursors/eraser.png');
+    transform: translate(-40%, -105%);
+    width: 25px;
+    height: 25px;
+}
+

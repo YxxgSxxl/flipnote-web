@@ -1,0 +1,175 @@
+@import "cursor.css";
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  font-weight: normal;
+
+  cursor: none;
+}
+
+/* color palette */
+:root {
+  --app-c-light: #ffffff;
+  --app-c-light-alt: #eaeaea;
+  --app-c-light-border: #6d7175;
+  --app-c-light-border-hover: #a0a4a8;
+  --app-c-light-border-active: #7d9db3;
+
+  --app-c-dark: #203548;
+  --app-c-dark-alt: #152330;
+  --app-c-dark-border: #66898f;
+  --app-c-dark-border-hover: #92bec5;
+  --app-c-dark-border-active: #ade8f1;
+
+  --app-c-text-light: #eef1f1;
+  --app-c-text-dark: #202223;
+
+  --app-c-link-light: #e2b761;
+  --app-c-link-light-hover: #ffd98e;
+}
+
+/* semantic color variables for this project */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-background: var(--app-c-dark);
+    --color-background-soft: var(--app-c-dark-alt);
+
+    --color-border: var();
+    --color-border-hover: var();
+
+    --color-text: var(--app-c-text-light);
+  }
+
+  canvas {
+    outline: 3px solid var(--app-c-dark-border);
+    transition: all 0.5s;
+  }
+
+  canvas:hover {
+    outline: 3px solid var(--app-c-dark-border-hover);
+  }
+
+  .toolbox button {
+    background-color: #ddd;
+    outline: 2px solid var(--app-c-dark-border);
+    transition: ease 0.2s;
+  }
+
+  .toolbox button:hover {
+    outline: 2px solid var(--app-c-dark-border-hover);
+  }
+
+  .toolbox button.active {
+    background-color: #ddd;
+    outline: 3px solid var(--app-c-link-light);
+  }
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    --color-background: var(--app-c-light-alt);
+    --color-background-soft: var(--app-c-light-alt);
+
+    --color-border: var(--app-c-light-border);
+    --color-border-hover: var(--app-c-light-border-hover);
+
+    --color-text: var(--app-c-text-dark);
+  }
+
+  canvas {
+    outline: 3px solid var(--app-c-light-border);
+    transition: all 0.5s;
+  }
+
+  canvas:hover {
+    outline: 3px solid var(--app-c-light-border-hover);
+  }
+
+  .toolbox button {
+    background-color: #ddd;
+    outline: 2px solid var(--app-c-light-border);
+    transition: ease 0.2s;
+  }
+
+  .toolbox button:hover {
+    outline: 2px solid var(--app-c-light-border-hover);
+  }
+
+  .toolbox button.active {
+    background-color: #ddd;
+    outline: 3px solid var(--app-c-dark-border-active);
+  }
+}
+
+body {
+  min-height: 100vh;
+  color: var(--color-text);
+  background: var(--color-background);
+  transition:
+          color 0.5s,
+          background-color 0.5s;
+  line-height: 1.6;
+  font-family:
+          Inter,
+          -apple-system,
+          BlinkMacSystemFont,
+          'Segoe UI',
+          Roboto,
+          Oxygen,
+          Ubuntu,
+          Cantarell,
+          'Fira Sans',
+          'Droid Sans',
+          'Helvetica Neue',
+          sans-serif;
+  font-size: 15px;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+a {
+  color: var(--app-c-link-light);
+  text-decoration: underline;
+  transition: color 0.4s;
+}
+
+a:hover {
+  color: var(--app-c-link-light-hover);
+  text-decoration: none;
+}
+
+main {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+}
+
+canvas {
+  background-color: white;
+  border: 1px solid black;
+  margin-top: 2rem;
+}
+
+.toolbox {
+  display: flex;
+  gap: 10px;
+}
+
+.toolbox button img {
+  pointer-events: none;
+}
+
+
+@media (min-width: 1024px) {
+  body {
+  }
+
+  #app {
+  }
+}
