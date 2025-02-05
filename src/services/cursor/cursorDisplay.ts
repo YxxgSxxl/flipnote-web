@@ -1,16 +1,15 @@
 import { toolSelected } from './cursorTools';
 
 document.addEventListener("DOMContentLoaded", () => {
-    const brushSettings = document.querySelector(".brush-settings") as HTMLElement;
-    const eraserSettings = document.querySelector(".eraser-settings") as HTMLElement;
-    const pencilSettings = document.querySelector(".pencil-settings") as HTMLElement;
+    const toolSettings: Record<string, HTMLElement | null> = {
+        "Brush": document.querySelector(".brush-settings"),
+        "Eraser": document.querySelector(".eraser-settings"),
+        "Pencil": document.querySelector(".pencil-settings"),
+    };
 
-    brushSettings.classList.add("hidden");
-    eraserSettings.classList.add("hidden");
-    pencilSettings.classList.add("hidden");
+    Object.values(toolSettings).forEach(setting => setting?.classList.add("hidden"));
 
-    let x: number = 0;
-    let y: number = 0;
+    let x = 0, y = 0;
 
     const cursor = document.createElement("div");
     cursor.classList.add("idle-cursor");
@@ -23,46 +22,34 @@ document.addEventListener("DOMContentLoaded", () => {
         cursor.style.left = `${x}px`;
         cursor.style.top = `${y}px`;
 
-        hideAllSettings();
-
-        switch (toolSelected) {
-            case "Brush":
-                brushSettings.classList.remove("hidden");
-                cursor.classList.add("brush-cursor");
-                cursor.classList.remove("eraser-cursor", "pencil-cursor");
-                break;
-            case "Eraser":
-                eraserSettings.classList.remove("hidden");
-                cursor.classList.add("eraser-cursor");
-                cursor.classList.remove("brush-cursor", "pencil-cursor");
-                break;
-            case "Pencil":
-                pencilSettings.classList.remove("hidden");
-                cursor.classList.add("pencil-cursor");
-                cursor.classList.remove("brush-cursor", "eraser-cursor");
-                break;
-            default:
-                cursor.classList.remove("brush-cursor", "eraser-cursor", "pencil-cursor");
-                break;
-        }
+        toggleToolSettings(toolSelected ?? "");
+        updateCursorClass(toolSelected ?? "");
     }
 
-    function hideAllSettings() {
-        brushSettings.classList.add("hidden");
-        eraserSettings.classList.add("hidden");
-        pencilSettings.classList.add("hidden");
+    function toggleToolSettings(tool: string) {
+        Object.values(toolSettings).forEach(setting => setting?.classList.add("hidden"));
+
+        toolSettings[tool]?.classList.remove("hidden");
+    }
+
+    function updateCursorClass(tool: string) {
+        cursor.classList.remove("brush-cursor", "eraser-cursor", "pencil-cursor");
+
+        if (tool === "Brush") cursor.classList.add("brush-cursor");
+        else if (tool === "Eraser") cursor.classList.add("eraser-cursor");
+        else if (tool === "Pencil") cursor.classList.add("pencil-cursor");
     }
 
     function checkHover(event: MouseEvent) {
         const target = event.target as HTMLElement;
-        if (target.tagName === "A" || target.tagName === "BUTTON") {
+        if (["A", "BUTTON"].includes(target.tagName)) {
             cursor.classList.add("hover-link");
         }
     }
 
     function removeHover(event: MouseEvent) {
         const target = event.target as HTMLElement;
-        if (target.tagName === "A" || target.tagName === "BUTTON") {
+        if (["A", "BUTTON"].includes(target.tagName)) {
             cursor.classList.remove("hover-link");
         }
     }

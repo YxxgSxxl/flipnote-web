@@ -66,6 +66,21 @@
     background-color: #ddd;
     outline: 3px solid var(--app-c-link-light);
   }
+
+  .settings button {
+    background-color: #ddd;
+    outline: 2px solid var(--app-c-dark-border);
+    transition: ease 0.2s;
+  }
+
+  .settings button:hover {
+    outline: 2px solid var(--app-c-dark-border-hover);
+  }
+
+  .settings button.active {
+    background-color: #ddd;
+    outline: 3px solid var(--app-c-link-light);
+  }
 }
 
 @media (prefers-color-scheme: light) {
@@ -99,6 +114,21 @@
   }
 
   .toolbox button.active {
+    background-color: #ddd;
+    outline: 3px solid var(--app-c-dark-border-active);
+  }
+
+  .settings button {
+    background-color: #ddd;
+    outline: 2px solid var(--app-c-light-border);
+    transition: ease 0.2s;
+  }
+
+  .settings button:hover {
+    outline: 2px solid var(--app-c-light-border-hover);
+  }
+
+  .settings button.active {
     background-color: #ddd;
     outline: 3px solid var(--app-c-dark-border-active);
   }
@@ -162,6 +192,15 @@ canvas {
 }
 
 .toolbox button img {
+  pointer-events: none;
+}
+
+.settings {
+  display: flex;
+  gap: 10px;
+}
+
+.settings img {
   pointer-events: none;
 }
 

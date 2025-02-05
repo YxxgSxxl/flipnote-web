@@ -16,7 +16,7 @@ document.addEventListener("DOMContentLoaded", () => {
         button.addEventListener('click', () => {
             toolSelected = button.querySelector('img')?.alt.split(" ")[0] || "Unknown";
 
-            console.log(toolSelected)
+            // console.log(toolSelected)
 
             tools.forEach(btn => btn.classList.remove('active'));
             button.classList.add('active');
