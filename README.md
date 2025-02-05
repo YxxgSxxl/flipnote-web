@@ -64,4 +64,4 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 
 ## Contact
 
-For any questions or feedback, please open an issue on the [GitHub repository](https://github.com/yourusername/flipnote-web/issues).
+For any questions or feedback, please open an issue on the [GitHub repository](https://github.com/YxxgSxxl/flipnote-web/issues).
