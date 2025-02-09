@@ -8,15 +8,16 @@ import { Eraser } from '../tools/eraser'
 import '../cursor/cursorDisplay.ts'
 import '../cursor/cursorTools.ts'
 import '../tools/handleTools.ts'
+import { setupToolboxEvents } from '../tools/handleTools.ts'
 
 export function setupCanvas() {
     document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
         <main>
             <canvas id="canvas" width="600" height="400"></canvas>
             <div class="toolbox">
-                <button><img src="/img/cursors/brush.png" alt="Brush Icon" width="24" height="24"></button>
-                <button><img src="/img/cursors/pencil.png" alt="Pencil Icon" width="24" height="24"></button>
-                <button><img src="/img/cursors/eraser.png" alt="Eraser Icon" width="24" height="24"></button>
+                <button id="Brush"><img src="/img/cursors/brush.png" alt="Brush Icon" width="24" height="24"></button>
+                <button id="Pencil"><img src="/img/cursors/pencil.png" alt="Pencil Icon" width="24" height="24"></button>
+                <button id="Eraser"><img src="/img/cursors/eraser.png" alt="Eraser Icon" width="24" height="24"></button>
             </div>
 
             <div class="settings brush-settings">
@@ -42,4 +43,6 @@ export function setupCanvas() {
     const canvas = document.querySelector<HTMLCanvasElement>('#canvas')!;
     paper.setup(canvas);
     console.log('Canvas setup complete');
+
+    setupToolboxEvents();
 }

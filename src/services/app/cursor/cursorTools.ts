@@ -1,22 +1,33 @@
-export let toolSelected: string | null = null;
+export let toolSelected: string = "Brush";
+
+console.log(`Outil sélectionné par défaut : ${toolSelected}`);
 
 document.addEventListener("DOMContentLoaded", () => {
-    const tools = document.querySelectorAll<HTMLButtonElement>('.toolbox button');
-
-    if (tools.length > 0) {
-        toolSelected = tools[0].querySelector('img')?.alt.split(" ")[0] || "Unknown";
-        tools[0].classList.add('active');
-        window.dispatchEvent(new CustomEvent("toolChanged", { detail: toolSelected }));
-    }
-
-    tools.forEach((button) => {
-        button.addEventListener('click', () => {
-            toolSelected = button.querySelector('img')?.alt.split(" ")[0] || "Unknown";
-
-            tools.forEach(btn => btn.classList.remove('active'));
-            button.classList.add('active');
-
-            window.dispatchEvent(new CustomEvent("toolChanged", { detail: toolSelected }));
-        });
-    });
+  const tools = document.querySelectorAll<HTMLButtonElement>(".toolbox button");
+  const defaultTool = Array.from(tools).find((tool) => tool.id === toolSelected);
+  
+  if (defaultTool) {
+    defaultTool.classList.add("active");
+  }
 });
+
+export function setTool(tool: string) {
+  toolSelected = tool;
+  console.log(`Outil sélectionné: ${tool}`);
+
+  const tools = document.querySelectorAll<HTMLButtonElement>(".toolbox button");
+
+  tools.forEach((button) => button.classList.remove("active"));
+
+  const selectedTool = Array.from(tools).find(
+    (tool) => tool.id === toolSelected
+  );
+
+  if (selectedTool) {
+    selectedTool.classList.add("active");
+  }
+}
+
+export function getTool() {
+  return toolSelected;
+}
