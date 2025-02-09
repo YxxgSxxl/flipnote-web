@@ -208,10 +208,9 @@ canvas {
   display: none;
 }
 
-@media (min-width: 1024px) {
-  body {
-  }
-
-  #app {
-  }
+#loading-container {
+  width: 100%;
+  max-width: 400px;
+  margin: 50px auto;
+  text-align: center;
 }

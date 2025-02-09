@@ -1,4 +1,4 @@
-import { toolSelected } from './cursorTools';
+import { toolSelected } from './cursorTools.ts';
 
 document.addEventListener("DOMContentLoaded", () => {
     const toolSettings: Record<string, HTMLElement | null> = {
@@ -15,12 +15,13 @@ document.addEventListener("DOMContentLoaded", () => {
     cursor.classList.add("idle-cursor");
     document.body.appendChild(cursor);
 
-    function updateCursor(event: MouseEvent) {
-        x = event.clientX;
-        y = event.clientY;
-
-        cursor.style.left = `${x}px`;
-        cursor.style.top = `${y}px`;
+    function updateCursor(event?: MouseEvent) {
+        if (event) {
+            x = event.clientX;
+            y = event.clientY;
+            cursor.style.left = `${x}px`;
+            cursor.style.top = `${y}px`;
+        }
 
         toggleToolSettings(toolSelected ?? "");
         updateCursorClass(toolSelected ?? "");
@@ -54,6 +55,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
+    window.addEventListener("toolChanged", () => updateCursor()); // custom eventListener tool clicked
     window.addEventListener("mousemove", updateCursor);
     window.addEventListener("mouseover", checkHover);
     window.addEventListener("mouseout", removeHover);

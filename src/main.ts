@@ -1,6 +1,7 @@
 import './stylesheet/style.css'
-import './services/cursor/cursorDisplay.ts'
-import './services/cursor/cursorTools.ts'
+import './services/app/cursor/cursorDisplay.ts'
+import './services/app/cursor/cursorTools.ts'
+import './services/app/tools/handleTools.ts'
 
 document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
     <main>
