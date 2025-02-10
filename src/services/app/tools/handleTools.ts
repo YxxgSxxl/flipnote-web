@@ -1,27 +1,26 @@
-import { setTool } from '../cursor/cursorTools';
-import { Brush } from '../tools/brush';
-import { Pencil } from '../tools/pencil';
-import { Eraser } from '../tools/eraser';
+import { setTool } from "../cursor/cursorTools";
+import { Brush } from "../tools/brush";
+import { Pencil } from "../tools/pencil";
+import { Eraser } from "../tools/eraser";
 
 export function setupToolboxEvents() {
-    const brushButton = document.querySelector('button#Brush')!;
-    const pencilButton = document.querySelector('button#Pencil')!;
-    const eraserButton = document.querySelector('button#Eraser')!;
+  const brushButton = document.querySelector("button#Brush")!;
+  const pencilButton = document.querySelector("button#Pencil")!;
+  const eraserButton = document.querySelector("button#Eraser")!;
 
-    const brush = new Brush();
-    
-    brushButton.addEventListener('click', () => {
-        setTool('Brush');
-        brush.setBrushSize('Small');
-    });
+  const brush = new Brush();
 
-    pencilButton.addEventListener('click', () => {
-        setTool('Pencil');
-    });
+  brushButton.addEventListener("click", () => {
+    setTool("Brush");
+    brush.setBrushSize("Small");
+    brush.activate();
+  });
 
-    eraserButton.addEventListener('click', () => {
-        setTool('Eraser');
-    });
+  pencilButton.addEventListener("click", () => {
+    setTool("Pencil");
+  });
 
-    // Répéter la logique pour chaque bouton de taille pour les autres outils
+  eraserButton.addEventListener("click", () => {
+    setTool("Eraser");
+  });
 }

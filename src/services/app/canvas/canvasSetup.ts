@@ -7,10 +7,9 @@ import { Eraser } from '../tools/eraser'
 
 import '../cursor/cursorDisplay.ts'
 import '../cursor/cursorTools.ts'
-import '../tools/handleTools.ts'
 import { setupToolboxEvents } from '../tools/handleTools.ts'
 
-export function setupCanvas() {
+export function injectPage() {
     document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
         <main>
             <canvas id="canvas" width="600" height="400"></canvas>
@@ -40,9 +39,13 @@ export function setupCanvas() {
         </main>
     `;
 
+    canvasInit();
+    setupToolboxEvents();
+}
+
+function canvasInit() {
     const canvas = document.querySelector<HTMLCanvasElement>('#canvas')!;
+
     paper.setup(canvas);
     console.log('Canvas setup complete');
-
-    setupToolboxEvents();
 }
