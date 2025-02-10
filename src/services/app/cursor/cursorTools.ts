@@ -1,6 +1,4 @@
-export let toolSelected: string = "Brush";
-
-console.log(`Outil sélectionné par défaut : ${toolSelected}`);
+export let toolSelected: string = "";
 
 document.addEventListener("DOMContentLoaded", () => {
   const tools = document.querySelectorAll<HTMLButtonElement>(".toolbox button");

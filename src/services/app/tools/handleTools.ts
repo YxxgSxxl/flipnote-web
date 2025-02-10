@@ -7,9 +7,12 @@ export function setupToolboxEvents() {
     const brushButton = document.querySelector('button#Brush')!;
     const pencilButton = document.querySelector('button#Pencil')!;
     const eraserButton = document.querySelector('button#Eraser')!;
+
+    const brush = new Brush();
     
     brushButton.addEventListener('click', () => {
         setTool('Brush');
+        brush.setBrushSize('Small');
     });
 
     pencilButton.addEventListener('click', () => {
@@ -20,10 +23,5 @@ export function setupToolboxEvents() {
         setTool('Eraser');
     });
 
-    const brushSmallButton = document.querySelector('button#brush-small')!;
-    brushSmallButton.addEventListener('click', () => {
-        // Logique pour changer la taille du pinceau
-    });
-    
     // Répéter la logique pour chaque bouton de taille pour les autres outils
 }
