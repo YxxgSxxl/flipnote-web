@@ -34,12 +34,14 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function updateCursorClass(tool: string) {
-        cursor.classList.remove("brush-cursor", "eraser-cursor", "pencil-cursor");
-
+        cursor.classList.remove("brush-cursor", "eraser-cursor", "pencil-cursor", "fill-cursor");
+    
         if (tool === "Brush") cursor.classList.add("brush-cursor");
         else if (tool === "Eraser") cursor.classList.add("eraser-cursor");
         else if (tool === "Pencil") cursor.classList.add("pencil-cursor");
+        else if (tool === "Fill") cursor.classList.add("fill-cursor");
     }
+    
 
     function checkHover(event: MouseEvent) {
         const target = event.target as HTMLElement;

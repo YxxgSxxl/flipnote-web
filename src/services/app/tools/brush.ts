@@ -3,7 +3,7 @@ import paper from "paper";
 export class Brush {
   private tool: paper.Tool;
   private path?: paper.Path;
-  private static strokeWidth: number = 0; // Taille par défaut
+  private static strokeWidth: number = 0;
 
   constructor() {
     this.tool = new paper.Tool();
@@ -33,20 +33,33 @@ export class Brush {
   }
 
   setBrushSize(size: string) {
+    document.querySelectorAll<HTMLButtonElement>(".brush-size").forEach(button => {
+      button.classList.remove("active");
+    });
+
+    let selectedButton: HTMLButtonElement | null = null;
     switch (size) {
       case "Small":
-        Brush.strokeWidth = 2;
+        Brush.strokeWidth = 3;
+        selectedButton = document.querySelector("button#brush-small");
         break;
       case "Medium":
-        Brush.strokeWidth = 3;
+        Brush.strokeWidth = 5;
+        selectedButton = document.querySelector("button#brush-medium");
         break;
       case "Large":
-        Brush.strokeWidth = 5;
+        Brush.strokeWidth = 8;
+        selectedButton = document.querySelector("button#brush-large");
         break;
       default:
         console.warn("Invalid brush size");
         return;
     }
+    
+    if (selectedButton) {
+      selectedButton.classList.add("active");
+    }
+
     console.log(`Brush size set to: ${size}`);
   }
 }
