@@ -1,4 +1,4 @@
-export let toolSelected: string = localStorage.getItem("toolSelected") || "";
+export let toolSelected: string = "";
 
 document.addEventListener("DOMContentLoaded", () => {
   const tools = document.querySelectorAll<HTMLButtonElement>(".toolbox button");
