@@ -58,15 +58,15 @@ export class Eraser {
         let selectedButton: HTMLButtonElement | null = null;
         switch (size) {
             case "Small":
-                Eraser.strokeWidth = 2;
+                Eraser.strokeWidth = 4;
                 selectedButton = document.querySelector("button#eraser-small");
                 break;
             case "Medium":
-                Eraser.strokeWidth = 8;
+                Eraser.strokeWidth = 12;
                 selectedButton = document.querySelector("button#eraser-medium");
                 break;
             case "Large":
-                Eraser.strokeWidth = 16;
+                Eraser.strokeWidth = 24;
                 selectedButton = document.querySelector("button#eraser-large");
                 break;
             default:

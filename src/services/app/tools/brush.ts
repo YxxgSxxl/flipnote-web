@@ -26,6 +26,12 @@ export class Brush {
         this.path.simplify();
       }
     };
+
+    // Retrieve the strokeWidth from localStorage if available
+    const savedStrokeWidth = localStorage.getItem("brushStrokeWidth");
+    if (savedStrokeWidth) {
+      Brush.strokeWidth = parseInt(savedStrokeWidth, 10);
+    }
   }
 
   activate() {
@@ -60,6 +66,9 @@ export class Brush {
       selectedButton.classList.add("active");
     }
 
+    // Save the strokeWidth to localStorage
+    localStorage.setItem("brushStrokeWidth", Brush.strokeWidth.toString());
+
     console.log(`Brush size set to: ${size}`);
   }
 }
@@ -79,4 +88,18 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     }
   );
+
+  // Set the active button based on the saved strokeWidth
+  const savedStrokeWidth = localStorage.getItem("brushStrokeWidth");
+  if (savedStrokeWidth) {
+    const sizeMap: { [key: number]: string } = {
+      3: "Small",
+      5: "Medium",
+      8: "Large"
+    };
+    const size = sizeMap[parseInt(savedStrokeWidth, 10)];
+    if (size) {
+      brush.setBrushSize(size);
+    }
+  }
 });

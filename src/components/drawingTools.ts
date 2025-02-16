@@ -3,7 +3,6 @@ export function DrawingTools() {
                 <div class="toolbox">
                 <button id="Brush"><img src="/img/cursors/brush.png" alt="Brush Icon" width="24" height="24"></button>
                 <button id="Pencil"><img src="/img/cursors/pencil.png" alt="Pencil Icon" width="24" height="24"></button>
-                <button id="Fill"><img src="/img/cursors/fill.png" alt="Fill Bucket Icon" width="24" height="24"></button>
                 <button id="Eraser"><img src="/img/cursors/eraser.png" alt="Eraser Icon" width="24" height="24"></button>
             </div>
 

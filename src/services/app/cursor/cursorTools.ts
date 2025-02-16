@@ -1,4 +1,4 @@
-export let toolSelected: string = "";
+export let toolSelected: string = localStorage.getItem("toolSelected") || "";
 
 document.addEventListener("DOMContentLoaded", () => {
   const tools = document.querySelectorAll<HTMLButtonElement>(".toolbox button");
@@ -11,6 +11,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 export function setTool(tool: string) {
   toolSelected = tool;
+  localStorage.setItem("toolSelected", tool);
   console.log(`Outil sélectionné: ${tool}`);
 
   const tools = document.querySelectorAll<HTMLButtonElement>(".toolbox button");
