@@ -3,7 +3,8 @@ import paper from "paper";
 // Services imports
 import "../cursor/cursorDisplay.ts";
 import "../cursor/cursorTools.ts";
-import { setupToolboxEvents } from "../handlers/handleTools.ts";
+import { setupToolsEvents } from "../handlers/handleTools.ts";
+import { setupAnimationsEvents } from "../handlers/handleAnimations.ts";
 
 // Components imports
 import { AnimateTools } from "../../../components/animateTools.ts";
@@ -32,7 +33,8 @@ export function injectPage() {
     `;
 
   canvasInit();
-  setupToolboxEvents();
+  setupToolsEvents();
+  setupAnimationsEvents();
 }
 
 function canvasInit() {

@@ -1,5 +1,7 @@
 export function AnimateTools() {
   return `
-    <h1>Outils d'animation ici</h1>
+            <div class="toolbox animatebox">
+                <button id="Play"><img src="/img/icons/playbtn_32x32.png" alt="Play Button Icon" width="24" height="24"></button>
+            </div>
     `;
 }

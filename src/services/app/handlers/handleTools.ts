@@ -4,7 +4,7 @@ import { Pencil } from "../tools/pencil";
 import { Eraser } from "../tools/eraser";
 // import { Fill } from "../tools/fill";
 
-export function setupToolboxEvents() {
+export function setupToolsEvents() {
   const brushButton: HTMLButtonElement =
     document.querySelector("button#Brush")!;
   const pencilButton: HTMLButtonElement =

@@ -1,6 +1,6 @@
 export function DrawingTools() {
   return `
-                <div class="toolbox">
+            <div class="toolbox drawingbox">
                 <button id="Brush"><img src="/img/cursors/brush.png" alt="Brush Icon" width="24" height="24"></button>
                 <button id="Pencil"><img src="/img/cursors/pencil.png" alt="Pencil Icon" width="24" height="24"></button>
                 <button id="Eraser"><img src="/img/cursors/eraser.png" alt="Eraser Icon" width="24" height="24"></button>
