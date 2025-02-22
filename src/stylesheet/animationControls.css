@@ -1,0 +1,21 @@
+/* FPS Toggle Button Colors for 8/12fps */
+.fps-toggle button.low-fps {
+    background-color: #7d6a9e;
+    color: white;
+}
+
+.fps-toggle button.standard-fps {
+    background-color: #4a6da7;
+    color: white;
+}
+
+/* Dark mode adjustments */
+@media (prefers-color-scheme: dark) {
+    .fps-toggle button.low-fps {
+        background-color: #655480;
+    }
+
+    .fps-toggle button.standard-fps {
+        background-color: #3d5a8a;
+    }
+}

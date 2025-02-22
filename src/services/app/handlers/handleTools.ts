@@ -6,12 +6,12 @@ import { Eraser } from "../tools/eraser";
 
 export function setupToolsEvents() {
   const brushButton: HTMLButtonElement =
-    document.querySelector("button#Brush")!;
+      document.querySelector("button#Brush")!;
   const pencilButton: HTMLButtonElement =
-    document.querySelector("button#Pencil")!;
+      document.querySelector("button#Pencil")!;
   // const fillButton: HTMLButtonElement = document.querySelector("button#Fill")!;
   const eraserButton: HTMLButtonElement =
-    document.querySelector("button#Eraser")!;
+      document.querySelector("button#Eraser")!;
 
   const brush = new Brush();
   const pencil = new Pencil();
@@ -20,13 +20,19 @@ export function setupToolsEvents() {
 
   brushButton.addEventListener("click", () => {
     setTool("Brush");
-    brush.setBrushSize("Small");
+
+    // Get saved brush size or default to Small
+    const savedBrushSize = localStorage.getItem("brushSize") || "Small";
+    brush.setBrushSize(savedBrushSize);
     brush.activate();
   });
 
   pencilButton.addEventListener("click", () => {
     setTool("Pencil");
-    pencil.setPencilSize("Small");
+
+    // Get saved pencil size or default to Small
+    const savedPencilSize = localStorage.getItem("pencilSize") || "Small";
+    pencil.setPencilSize(savedPencilSize);
     pencil.activate();
   });
 
@@ -38,7 +44,10 @@ export function setupToolsEvents() {
 
   eraserButton.addEventListener("click", () => {
     setTool("Eraser");
-    eraser.setEraserSize("Large");
+
+    // Get saved eraser size or default to Large
+    const savedEraserSize = localStorage.getItem("eraserSize") || "Large";
+    eraser.setEraserSize(savedEraserSize);
     eraser.activate();
   });
 }
