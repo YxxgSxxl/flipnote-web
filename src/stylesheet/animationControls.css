@@ -9,7 +9,97 @@
     color: white;
 }
 
-/* Dark mode adjustments */
+.animateBox {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+/* Animation Controls */
+.animation-controls {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin: 10px 0;
+    padding: 8px 12px;
+    background-color: rgba(200, 200, 200, 0.1);
+    border-radius: 4px;
+    width: fit-content;
+}
+
+.animation-controls label {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 14px;
+}
+
+/* FPS Toggle Button */
+.fps-toggle button {
+    padding: 5px 12px;
+    border-radius: 4px;
+    font-weight: bold;
+    border: none;
+    transition: background-color 0.2s, color 0.2s;
+}
+
+.fps-toggle button.standard-fps {
+    background-color: #4a6da7;
+    color: white;
+}
+
+.fps-toggle button.high-fps {
+    background-color: #2f9e44;
+    color: white;
+}
+
+.animation-controls .loop-label {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.animation-controls input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+}
+
+/* Animation preview badge */
+.animation-preview-badge {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background-color: rgba(255, 50, 50, 0.7);
+    color: white;
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: bold;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.canvas-container {
+    position: relative;
+}
+
+.canvas-container.playing .animation-preview-badge {
+    opacity: 1;
+}
+
+/* Canvas style during animation preview */
+.canvas-container.playing canvas {
+    cursor: not-allowed !important;
+}
+
+/* Disabled tool buttons during animation */
+.toolbox button.disabled,
+.settings button.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
 @media (prefers-color-scheme: dark) {
     .fps-toggle button.low-fps {
         background-color: #655480;

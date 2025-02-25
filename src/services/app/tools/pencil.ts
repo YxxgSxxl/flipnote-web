@@ -4,7 +4,7 @@ import { getCurrentFrame, saveFramesToStorage } from '../handlers/handleFrames';
 export class Pencil {
   private tool: paper.Tool;
   private path?: paper.Group;
-  private static strokeWidth: number = 3; // Default to small size
+  private static strokeWidth: number = 5; // Default to small size
   private lastPoint?: paper.Point;
 
   constructor() {
@@ -56,9 +56,9 @@ export class Pencil {
 
     // Map stroke width to button ID
     const sizeMap: Record<number, string> = {
-      3: "pencil-small",
-      5: "pencil-medium",
-      8: "pencil-large"
+      5: "pencil-small",
+      8: "pencil-medium",
+      10: "pencil-large"
     };
 
     // Add active class to current size button
@@ -93,7 +93,7 @@ export class Pencil {
     const direction = to.subtract(from).normalize();
 
     // For small stroke, use a different approach to ensure squares don't overlap
-    if (Pencil.strokeWidth === 3) {
+    if (Pencil.strokeWidth === 5) {
       // Calculate number of steps needed
       const steps = Math.floor(distance / step);
 
@@ -121,13 +121,13 @@ export class Pencil {
 
     switch (size) {
       case "Small":
-        newStrokeWidth = 3;
-        break;
-      case "Medium":
         newStrokeWidth = 5;
         break;
-      case "Large":
+      case "Medium":
         newStrokeWidth = 8;
+        break;
+      case "Large":
+        newStrokeWidth = 10;
         break;
       default:
         console.warn("Invalid pencil size");
@@ -169,9 +169,9 @@ document.addEventListener("DOMContentLoaded", () => {
   const savedStrokeWidth = localStorage.getItem("pencilStrokeWidth");
   if (savedStrokeWidth) {
     const sizeMap: Record<number, string> = {
-      3: "Small",
-      5: "Medium",
-      8: "Large"
+      5: "Small",
+      8: "Medium",
+      10: "Large"
     };
     const size = sizeMap[parseInt(savedStrokeWidth, 10)];
     if (size) {

@@ -1,4 +1,4 @@
-import { getCurrentFrame, nextFrame, previousFrame, addFrame, switchToFrame, getFramesCount } from "../handlers/handleFrames.ts";
+import { nextFrame, previousFrame, addFrame, switchToFrame, getFramesCount, clearCurrentFrame } from "../handlers/handleFrames.ts";
 
 export let animationPlaying: boolean = false;
 let animationInterval: number | null = null;
@@ -52,13 +52,15 @@ function setupFpsControls() {
             </button>
         </div>
         <label for="loop-checkbox" class="loop-label">
+        
             <input type="checkbox" id="loop-checkbox" ${loopAnimation ? 'checked' : ''}>
             Loop
         </label>
+        <span id="frame-indicator">Frame: 1/1</span>
     `;
 
     // Find the animatebox to insert controls after it
-    const animateBox = document.querySelector('.animatebox');
+    const animateBox = document.querySelector('.animateBox');
     if (animateBox && animateBox.parentNode) {
         animateBox.parentNode.insertBefore(fpsControls, animateBox.nextSibling);
 
@@ -244,4 +246,11 @@ export function setupFrameControls() {
     document.getElementById("NextFrame")?.addEventListener("click", nextFrame);
     document.getElementById("FirstFrame")?.addEventListener("click", goToFirstFrame);
     document.getElementById("LastFrame")?.addEventListener("click", goToLastFrame);
+    document.getElementById("ClearFrame")?.addEventListener("click", () => {
+        if (!animationPlaying) {
+            if (confirm("Are you sure you want to clear the current frame?")) {
+                clearCurrentFrame();
+            }
+        }
+    });
 }

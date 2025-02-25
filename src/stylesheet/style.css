@@ -32,7 +32,93 @@
   --app-c-link-light-hover: #ffd98e;
 }
 
-/* semantic color variables for this project */
+body {
+  min-height: 100vh;
+  color: var(--color-text);
+  background: var(--color-background);
+  transition: color 0.5s, background-color 0.5s;
+  line-height: 1.6;
+  font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+  Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue",
+  sans-serif;
+  font-size: 15px;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+a {
+  color: var(--app-c-link-light);
+  text-decoration: underline;
+  transition: color 0.4s;
+}
+
+a:hover {
+  color: var(--app-c-link-light-hover);
+  text-decoration: none;
+}
+
+main {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+}
+
+canvas {
+  background-color: white;
+  border: 1px solid black;
+  margin-top: 2rem;
+}
+
+.toolbox {
+  display: flex;
+}
+
+.toolbox button {
+  background-color: red;
+  width: 36px;
+  height: 33px;
+}
+
+.toolbox.drawingbox {
+  display: flex;
+  gap: 10px;
+}
+
+.toolbox .animateTools {
+  display: flex;
+  gap: 10px;
+}
+
+.toolbox button img {
+  pointer-events: none;
+}
+
+.settings {
+  display: flex;
+  gap: 10px;
+}
+
+.settings img {
+  pointer-events: none;
+}
+
+.hidden {
+  display: none;
+}
+
+#loading-container {
+  width: 100%;
+  max-width: 400px;
+  margin: 50px auto;
+  text-align: center;
+}
+
+/*************
+* DARK THEME *
+*************/
 @media (prefers-color-scheme: dark) {
   :root {
     --color-background: var(--app-c-dark);
@@ -82,8 +168,24 @@
     background-color: #ddd;
     outline: 3px solid var(--app-c-link-light);
   }
+
+  .animation-controls {
+    background-color: rgba(50, 50, 50, 0.3);
+    color: var(--app-c-text-light);
+  }
+
+  .fps-toggle button.standard-fps {
+    background-color: #3d5a8a;
+  }
+
+  .fps-toggle button.high-fps {
+    background-color: #2a803a;
+  }
 }
 
+/**************
+* LIGHT THEME *
+**************/
 @media (prefers-color-scheme: light) {
   :root {
     --color-background: var(--app-c-light-alt);
@@ -133,73 +235,4 @@
     background-color: #ddd;
     outline: 3px solid var(--app-c-dark-border-active);
   }
-}
-
-body {
-  min-height: 100vh;
-  color: var(--color-text);
-  background: var(--color-background);
-  transition: color 0.5s, background-color 0.5s;
-  line-height: 1.6;
-  font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-    Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue",
-    sans-serif;
-  font-size: 15px;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-a {
-  color: var(--app-c-link-light);
-  text-decoration: underline;
-  transition: color 0.4s;
-}
-
-a:hover {
-  color: var(--app-c-link-light-hover);
-  text-decoration: none;
-}
-
-main {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: 1rem;
-}
-
-canvas {
-  background-color: white;
-  border: 1px solid black;
-  margin-top: 2rem;
-}
-
-.toolbox {
-  display: flex;
-  gap: 10px;
-}
-
-.toolbox button img {
-  pointer-events: none;
-}
-
-.settings {
-  display: flex;
-  gap: 10px;
-}
-
-.settings img {
-  pointer-events: none;
-}
-
-.hidden {
-  display: none;
-}
-
-#loading-container {
-  width: 100%;
-  max-width: 400px;
-  margin: 50px auto;
-  text-align: center;
 }

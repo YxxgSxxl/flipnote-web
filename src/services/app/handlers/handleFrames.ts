@@ -347,6 +347,14 @@ export function switchToFrame(index: number): number | null {
   return currentFrameIndex;
 }
 
+export function clearCurrentFrame() {
+  if (frames[currentFrameIndex]) {
+    frames[currentFrameIndex].removeChildren();
+    saveFramesToStorage();
+    console.log('Current frame cleared');
+  }
+}
+
 export function previousFrame() {
   if (currentFrameIndex > 0) {
     switchToFrame(currentFrameIndex - 1);
