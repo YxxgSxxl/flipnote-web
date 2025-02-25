@@ -320,11 +320,20 @@ export function setupFrames() {
 }
 
 export function addFrame() {
-  const frame = new paper.Group();
-  frames.push(frame);
-  switchToFrame(frames.length - 1);
+  const newFrame = new paper.Group();
+
+  const insertIndex = currentFrameIndex + 1;
+
+  if (insertIndex < frames.length) {
+    frames.splice(insertIndex, 0, newFrame);
+  } else {
+    frames.push(newFrame);
+  }
+
+  switchToFrame(insertIndex);
   saveFramesToStorage();
-  console.log(`Added new frame. Total frames: ${frames.length}`);
+
+  console.log(`Added new frame at position ${insertIndex + 1}. Total frames: ${frames.length}`);
 }
 
 export function switchToFrame(index: number): number | null {
@@ -353,6 +362,39 @@ export function clearCurrentFrame() {
     saveFramesToStorage();
     console.log('Current frame cleared');
   }
+}
+
+export function deleteCurrentFrame() {
+  if (frames.length <= 1) {
+    // Ne pas supprimer s'il n'y a qu'une seule frame
+    console.log('Cannot delete the only frame');
+    return false;
+  }
+
+  // Supprimer la frame courante
+  if (frames[currentFrameIndex]) {
+    frames[currentFrameIndex].remove();
+    frames.splice(currentFrameIndex, 1);
+  }
+
+  // Ajuster l'index si nécessaire
+  if (currentFrameIndex >= frames.length) {
+    currentFrameIndex = frames.length - 1;
+  }
+
+  // Rendre visible la nouvelle frame courante
+  if (frames[currentFrameIndex]) {
+    frames[currentFrameIndex].visible = true;
+  }
+
+  // Mettre à jour l'indicateur de frame dans l'UI
+  updateFrameIndicator();
+
+  // Sauvegarder l'état actuel
+  saveFramesToStorage();
+
+  console.log(`Deleted frame. Now at frame ${currentFrameIndex + 1} of ${frames.length}`);
+  return true;
 }
 
 export function previousFrame() {

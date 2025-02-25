@@ -1,4 +1,12 @@
-import { nextFrame, previousFrame, addFrame, switchToFrame, getFramesCount, clearCurrentFrame } from "../handlers/handleFrames.ts";
+import {
+    nextFrame,
+    previousFrame,
+    addFrame,
+    switchToFrame,
+    getFramesCount,
+    clearCurrentFrame,
+    deleteCurrentFrame
+} from "../handlers/handleFrames.ts";
 
 export let animationPlaying: boolean = false;
 let animationInterval: number | null = null;
@@ -240,17 +248,21 @@ export function goToLastFrame() {
     }
 }
 
+
 export function setupFrameControls() {
     document.getElementById("AddFrame")?.addEventListener("click", addFrame);
     document.getElementById("PrevFrame")?.addEventListener("click", previousFrame);
     document.getElementById("NextFrame")?.addEventListener("click", nextFrame);
     document.getElementById("FirstFrame")?.addEventListener("click", goToFirstFrame);
     document.getElementById("LastFrame")?.addEventListener("click", goToLastFrame);
+    document.getElementById("DeleteFrame")?.addEventListener("click", () => {
+        if (!animationPlaying) {
+            deleteCurrentFrame();
+        }
+    });
     document.getElementById("ClearFrame")?.addEventListener("click", () => {
         if (!animationPlaying) {
-            if (confirm("Are you sure you want to clear the current frame?")) {
-                clearCurrentFrame();
-            }
+            clearCurrentFrame();
         }
     });
 }

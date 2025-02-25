@@ -25,6 +25,9 @@ export function AnimateTools() {
                 <button id="ClearFrame" title="Clear Current Frame" class="clear-frame">
                     <img src="/img/icons/broom_32x32.png" alt="Broom Wipe frame Icon" width="24" height="24">
                 </button>
+                <button id="DeleteFrame" title="Delete Current Frame" class="delete-frame">
+                    <img src="/img/icons/trash_32x32.png" alt="Delete frame Icon" width="24" height="24">
+                </button>
             </div>
         </div>
     `;
