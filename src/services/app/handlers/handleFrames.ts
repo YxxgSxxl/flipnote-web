@@ -35,6 +35,101 @@ interface StoredData {
 let frames: paper.Group[] = [];
 let currentFrameIndex = 0;
 
+// Variables pour gérer l'onion skinning
+let onionSkinningEnabled = false;
+const onionSkinningOpacity = 0.3; // Opacité fixe à 0.3
+
+// Fonction pour activer/désactiver l'onion skinning
+export function toggleOnionSkinning() {
+  onionSkinningEnabled = !onionSkinningEnabled;
+  updateOnionSkinning();
+  return onionSkinningEnabled;
+}
+
+// Fonction pour mettre à jour l'onion skinning
+export function updateOnionSkinning() {
+  // Supprimer d'abord tous les clones d'onion skinning existants
+  for (let i = paper.project.layers.length - 1; i >= 0; i--) {
+    const layer = paper.project.layers[i];
+    if (layer.data && layer.data.isOnionSkin) {
+      layer.remove();
+    }
+  }
+
+  // Si l'onion skinning est désactivé, on s'arrête ici
+  if (!onionSkinningEnabled || frames.length <= 1) {
+    return;
+  }
+
+  // Afficher uniquement la frame précédente
+  const prevIndex = currentFrameIndex - 1;
+  if (prevIndex >= 0) {
+    createOnionSkinLayer(frames[prevIndex], prevIndex);
+  }
+
+  // IMPORTANT: Au lieu de définir directement activeLayer, activons la couche appropriée
+  const frameLayer = getFrameLayer(currentFrameIndex);
+  frameLayer.activate();
+}
+
+// Fonction pour créer une couche d'onion skinning
+function createOnionSkinLayer(sourceFrame: paper.Group, sourceIndex: number) {
+  // Créer une nouvelle couche pour l'onion skinning
+  const onionLayer = new paper.Layer();
+  onionLayer.opacity = onionSkinningOpacity;
+
+  // Marquer cette couche comme étant une couche d'onion skinning pour la retrouver facilement
+  onionLayer.data = {
+    isOnionSkin: true,
+    sourceIndex: sourceIndex
+  };
+
+  // Cloner tous les éléments de la frame source
+  sourceFrame.children.forEach(child => {
+    const clone = child.clone();
+
+    // Appliquer une teinte rouge claire aux clones
+    if (clone instanceof paper.Path) {
+      if (clone.fillColor) {
+        const originalColor = clone.fillColor;
+        clone.fillColor = new paper.Color(
+            Math.min(1, originalColor.red * 1.2),
+            originalColor.green * 0.8,
+            originalColor.blue * 0.8
+        );
+      }
+
+      if (clone.strokeColor) {
+        const originalColor = clone.strokeColor;
+        clone.strokeColor = new paper.Color(
+            Math.min(1, originalColor.red * 1.2),
+            originalColor.green * 0.8,
+            originalColor.blue * 0.8
+        );
+      }
+    }
+
+    onionLayer.addChild(clone);
+  });
+
+  // Placer cette couche derrière la couche active
+  onionLayer.moveBelow(paper.project.activeLayer);
+}
+
+// Fonction auxiliaire pour obtenir la couche (layer) d'une frame
+function getFrameLayer(frameIndex: number): paper.Layer {
+  // Rechercher la couche qui contient la frame courante
+  for (let i = 0; i < paper.project.layers.length; i++) {
+    const layer = paper.project.layers[i];
+    if (layer.children.includes(frames[frameIndex])) {
+      return layer;
+    }
+  }
+
+  // Si aucune couche n'est trouvée, utiliser la couche par défaut
+  return paper.project.activeLayer;
+}
+
 // Helper function to serialize a paper.Item (Path or Group)
 function serializeItem(item: paper.Item): ItemData {
   if (item instanceof paper.Path) {
@@ -304,11 +399,14 @@ export function loadFramesFromStorage(): boolean {
 }
 
 // Update the frame indicator in the UI
-function updateFrameIndicator() {
+export function updateFrameIndicator() {
   // Find frame indicator if it exists
   const frameIndicator = document.getElementById('frame-indicator');
   if (frameIndicator) {
-    frameIndicator.textContent = `Frame: ${currentFrameIndex + 1}/${frames.length}`;
+    // S'assurer que nous avons le bon nombre de frames
+    const framesCount = frames.length || 1; // Éviter l'affichage de 0
+    frameIndicator.textContent = `Frame: ${currentFrameIndex + 1}/${framesCount}`;
+    console.log(`Updated frame indicator: ${currentFrameIndex + 1}/${framesCount}`);
   }
 }
 
@@ -329,17 +427,38 @@ export function setupFrames() {
 }
 
 export function addFrame() {
+  // Désactiver temporairement l'onion skinning pendant la création de frame
+  const wasOnionEnabled = onionSkinningEnabled;
+  if (wasOnionEnabled) {
+    // Désactiver sans changer l'état du bouton UI
+    onionSkinningEnabled = false;
+    updateOnionSkinning();
+  }
+
   const newFrame = new paper.Group();
 
+  // Calculer la position d'insertion (après la frame courante)
   const insertIndex = currentFrameIndex + 1;
 
+  // Insérer la nouvelle frame après la frame courante
   if (insertIndex < frames.length) {
+    // Insérer au milieu
     frames.splice(insertIndex, 0, newFrame);
   } else {
+    // Ou ajouter à la fin si on est déjà à la dernière frame
     frames.push(newFrame);
   }
 
+  // Passer directement à la nouvelle frame
   switchToFrame(insertIndex);
+
+  // Restaurer l'état de l'onion skinning après avoir configuré la nouvelle frame
+  if (wasOnionEnabled) {
+    onionSkinningEnabled = true;
+    updateOnionSkinning();
+  }
+
+  // Sauvegarder l'état mis à jour
   saveFramesToStorage();
 
   console.log(`Added new frame at position ${insertIndex + 1}. Total frames: ${frames.length}`);
@@ -358,6 +477,13 @@ export function switchToFrame(index: number): number | null {
   // Update frame indicator
   updateFrameIndicator();
 
+  // Mettre à jour l'onion skinning après avoir changé de frame
+  updateOnionSkinning();
+
+  // IMPORTANT: Utiliser la méthode activate() au lieu de définir activeLayer
+  const frameLayer = getFrameLayer(currentFrameIndex);
+  frameLayer.activate();
+
   // Save current frame index to storage
   saveFramesToStorage();
 
@@ -368,6 +494,10 @@ export function switchToFrame(index: number): number | null {
 export function clearCurrentFrame() {
   if (frames[currentFrameIndex]) {
     frames[currentFrameIndex].removeChildren();
+
+    // Mettre à jour l'onion skinning
+    updateOnionSkinning();
+
     saveFramesToStorage();
     console.log('Current frame cleared');
   }
@@ -399,6 +529,9 @@ export function deleteCurrentFrame() {
   // Mettre à jour l'indicateur de frame dans l'UI
   updateFrameIndicator();
 
+  // Mettre à jour l'onion skinning
+  updateOnionSkinning();
+
   // Sauvegarder l'état actuel
   saveFramesToStorage();
 
@@ -422,17 +555,24 @@ export function getCurrentFrame(): paper.Group | null {
   return frames[currentFrameIndex] || null;
 }
 
-export function getCurrentFrameIndex(): number {
-  return currentFrameIndex;
-}
-
 export function getFramesCount(): number {
   return frames.length;
+}
+
+export function getCurrentFrameIndex(): number {
+  return currentFrameIndex;
 }
 
 export function initializeFrameSystem() {
   setupFrames();
 
+  // S'assurer que la couche active est correctement configurée
+  if (frames.length > 0 && currentFrameIndex >= 0) {
+    const frameLayer = getFrameLayer(currentFrameIndex);
+    frameLayer.activate();
+  }
+
+  // Forcer une mise à jour de l'indicateur de frame après que tout soit chargé
   setTimeout(() => {
     updateFrameIndicator();
   }, 500);

@@ -5,7 +5,7 @@ import {
     switchToFrame,
     getFramesCount,
     clearCurrentFrame,
-    deleteCurrentFrame
+    deleteCurrentFrame, toggleOnionSkinning
 } from "../handlers/handleFrames.ts";
 
 export let animationPlaying: boolean = false;
@@ -105,6 +105,65 @@ function setupFpsControls() {
             (window as any).updateFrameCounter();
         }
     }, 200);
+}
+
+export function setupOnionSkinningControls() {
+    const onionToggle = document.getElementById('onion-toggle') as HTMLInputElement;
+    const opacitySlider = document.getElementById('onion-opacity') as HTMLInputElement;
+    const opacityValue = document.getElementById('onion-opacity-value');
+    const prevFramesSelect = document.getElementById('onion-prev-frames') as HTMLSelectElement;
+
+    // Charger les préférences sauvegardées
+    const savedOnionEnabled = localStorage.getItem('onionSkinningEnabled');
+    const savedOpacity = localStorage.getItem('onionSkinningOpacity');
+    const savedPrevFrames = localStorage.getItem('onionSkinningPrevFrames');
+
+    // Appliquer les préférences sauvegardées
+    if (savedOnionEnabled === 'true' && onionToggle) {
+        onionToggle.checked = true;
+        toggleOnionSkinning(); // Activer l'onion skinning
+    }
+
+    if (savedOpacity && opacitySlider) {
+        const opacity = parseInt(savedOpacity);
+        opacitySlider.value = opacity.toString();
+        if (opacityValue) {
+            opacityValue.textContent = `${opacity}%`;
+        }
+        setOnionSkinningOpacity(opacity / 100); // Convertir le pourcentage en valeur entre 0 et 1.
+    }
+
+    if (savedPrevFrames && prevFramesSelect) {
+        prevFramesSelect.value = savedPrevFrames;
+        setOnionSkinningFrames(parseInt(savedPrevFrames), 0);
+    }
+
+    // Configuration des événements
+    if (onionToggle) {
+        onionToggle.addEventListener('change', () => {
+            const isEnabled = toggleOnionSkinning();
+            localStorage.setItem('onionSkinningEnabled', isEnabled.toString());
+        });
+    }
+
+    if (opacitySlider) {
+        opacitySlider.addEventListener('input', () => {
+            const opacity = parseInt(opacitySlider.value);
+            if (opacityValue) {
+                opacityValue.textContent = `${opacity}%`;
+            }
+            setOnionSkinningOpacity(opacity / 100);
+            localStorage.setItem('onionSkinningOpacity', opacity.toString());
+        });
+    }
+
+    if (prevFramesSelect) {
+        prevFramesSelect.addEventListener('change', () => {
+            const prevFrames = parseInt(prevFramesSelect.value);
+            setOnionSkinningFrames(prevFrames, 0);
+            localStorage.setItem('onionSkinningPrevFrames', prevFrames.toString());
+        });
+    }
 }
 
 function loadAnimationPreferences() {
@@ -271,4 +330,32 @@ export function setupFrameControls() {
             clearCurrentFrame();
         }
     });
+    document.getElementById("OnionSkin")?.addEventListener("click", () => {
+        if (!animationPlaying) {
+            const button = document.getElementById("OnionSkin");
+            const isEnabled = toggleOnionSkinning();
+
+            // Mise à jour visuelle du bouton
+            if (button) {
+                if (isEnabled) {
+                    button.classList.add("active");
+                } else {
+                    button.classList.remove("active");
+                }
+            }
+
+            // Sauvegarder la préférence
+            localStorage.setItem('onionSkinningEnabled', isEnabled.toString());
+        }
+    });
+
+    // Restaurer l'état du bouton d'onion skinning depuis localStorage
+    const savedOnionEnabled = localStorage.getItem('onionSkinningEnabled');
+    if (savedOnionEnabled === 'true') {
+        const button = document.getElementById("OnionSkin");
+        if (button) {
+            button.classList.add("active");
+        }
+        toggleOnionSkinning(); // Activer l'onion skinning
+    }
 }

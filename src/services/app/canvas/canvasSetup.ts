@@ -7,7 +7,12 @@ import "../cursor/cursorTools.ts";
 // Handlers imports
 import { initializeFrameSystem } from "../handlers/handleFrames.ts";
 import { setupToolsEvents } from "../handlers/handleTools.ts";
-import { setupAnimationsEvents, setupFrameControls, animationPlaying } from "../handlers/handleAnimations.ts";
+import {
+  setupAnimationsEvents,
+  setupFrameControls,
+  animationPlaying,
+  setupOnionSkinningControls
+} from "../handlers/handleAnimations.ts";
 
 // Components imports
 import { AnimateTools } from "../../../components/animateTools.ts";
@@ -48,6 +53,7 @@ export function injectPage() {
   setupToolsEvents();
   setupAnimationsEvents();
   setupFrameControls();
+  setupOnionSkinningControls(); // Nouvelle fonction pour configurer les contrôles d'onion skinning
 
   // Set up animation preview indicator
   setupAnimationPreviewIndicator();

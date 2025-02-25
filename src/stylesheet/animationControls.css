@@ -100,6 +100,53 @@
     pointer-events: none;
 }
 
+/* Onion skinning */
+.onion-skinning-controls {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 15px;
+    margin: 5px 0;
+    padding: 8px 12px;
+    background-color: rgba(200, 200, 200, 0.1);
+    border-radius: 4px;
+    width: fit-content;
+}
+
+.onion-skinning-toggle label {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 14px;
+}
+
+.onion-skinning-settings {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.onion-skinning-frames {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.onion-skinning-controls select,
+.onion-skinning-controls input[type="range"] {
+    background-color: rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    border-radius: 3px;
+    padding: 2px 5px;
+}
+
+@media (prefers-color-scheme: dark) {
+    .onion-skinning-controls {
+        background-color: rgba(50, 50, 50, 0.3);
+        color: var(--app-c-text-light);
+    }
+}
+
 @media (prefers-color-scheme: dark) {
     .fps-toggle button.low-fps {
         background-color: #655480;

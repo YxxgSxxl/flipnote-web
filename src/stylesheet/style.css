@@ -78,8 +78,8 @@ canvas {
 
 .toolbox button {
   background-color: red;
-  width: 36px;
-  height: 33px;
+  width: 46px;
+  height: 43px;
 }
 
 .toolbox.drawingbox {
