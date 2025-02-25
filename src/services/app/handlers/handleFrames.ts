@@ -273,45 +273,48 @@ function deserializeItem(itemData: ItemData): paper.Item | null {
 
     // Restore children
     groupData.children.forEach(childData => {
-      if ('pathData' in childData || 'isCircle' in childData) {
-        // It's a path or circle
-        let child: paper.Item | null = null;
+      if ('pathData' in childData) {
+        // C'est un Path standard
+        const path = childData as PathData;
+        const childPath = new paper.Path(path.pathData);
 
-        if (childData.isCircle && 'center' in childData && 'radius' in childData) {
-          // Create circle
-          child = new paper.Path.Circle({
-            center: new paper.Point(childData.center!.x, childData.center!.y),
-            radius: childData.radius!,
-            fillColor: childData.fillColor ? new paper.Color(childData.fillColor) : 'white',
-            strokeWidth: 0,
-            strokeColor: null
-          });
+        // Définir les propriétés du trait
+        if (path.strokeColor === null) {
+          childPath.strokeWidth = 0;
+          childPath.strokeColor = null;
         } else {
-          // Create regular path
-          child = new paper.Path(childData.pathData);
-
-          // Explicitly set stroke properties
-          if (childData.strokeColor === null) {
-            child.strokeWidth = 0;
-            child.strokeColor = null;
-          } else {
-            child.strokeWidth = childData.strokeWidth;
-            child.strokeColor = new paper.Color(childData.strokeColor);
-          }
-
-          if (childData.fillColor) {
-            child.fillColor = new paper.Color(childData.fillColor);
-          }
+          childPath.strokeWidth = path.strokeWidth;
+          childPath.strokeColor = new paper.Color(path.strokeColor);
         }
 
-        if (child) {
-          group.addChild(child);
+        // Définir la couleur de remplissage si elle existe
+        if (path.fillColor) {
+          childPath.fillColor = new paper.Color(path.fillColor);
         }
+
+        group.addChild(childPath);
+      } else if ('isCircle' in childData && 'center' in childData && 'radius' in childData) {
+        // C'est un cercle
+        const circle = childData as unknown as (PathData & {
+          isCircle: boolean;
+          center: { x: number, y: number };
+          radius: number;
+        });
+
+        const childCircle = new paper.Path.Circle({
+          center: new paper.Point(circle.center.x, circle.center.y),
+          radius: circle.radius,
+          fillColor: circle.fillColor ? new paper.Color(circle.fillColor) : 'white',
+          strokeWidth: 0,
+          strokeColor: null
+        });
+
+        group.addChild(childCircle);
       } else if ('type' in childData && childData.type === 'group') {
-        // It's a nested group, recursive call
+        // C'est un groupe imbriqué
         const nestedItem = deserializeItem({
           type: 'group',
-          data: childData
+          data: childData as GroupData
         });
         if (nestedItem) {
           group.addChild(nestedItem);

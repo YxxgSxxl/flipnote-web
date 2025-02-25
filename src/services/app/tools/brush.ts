@@ -43,7 +43,7 @@ export class Brush {
       }
     };
 
-    this.tool.onMouseUp = (event: paper.ToolEvent) => {
+    this.tool.onMouseUp = () => {
       // Prevent drawing during animation playback
       if (animationPlaying) return;
 

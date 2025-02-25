@@ -6,7 +6,6 @@
   "scripts": {
     "dev": "vite --mode development",
     "build": "tsc && vite build",
-    "deploy-build": "npx tsc --skipLibCheck && vite build",
     "preview": "vite preview"
   },
   "devDependencies": {

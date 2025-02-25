@@ -96,7 +96,6 @@ export class Eraser {
         const distance = from.getDistance(to);
         // Adjust step based on size for better coverage
         const step = Math.min(Eraser.strokeWidth / 3, distance / 2);
-        const direction = to.subtract(from).normalize();
 
         if (distance < step) {
             // Just add one circle for very short distances
