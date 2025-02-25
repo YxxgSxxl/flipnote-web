@@ -88,3 +88,17 @@ function canvasInit() {
 
   console.log("Canvas setup complete");
 }
+
+function forceUpdateFrameIndicator() {
+  import('../handlers/handleFrames.ts').then(module => {
+    const frameCount = module.getFramesCount();
+    const currentIndex = module.getCurrentFrameIndex();
+    const frameIndicator = document.getElementById('frame-indicator');
+    if (frameIndicator) {
+      frameIndicator.textContent = `Frame: ${currentIndex + 1}/${frameCount}`;
+    }
+  });
+}
+
+// Rendre la fonction accessible globalement
+(window as any).updateFrameCounter = forceUpdateFrameIndicator;

@@ -99,6 +99,12 @@ function setupFpsControls() {
             localStorage.setItem('animationLoop', loopAnimation.toString());
         });
     }
+
+    setTimeout(() => {
+        if (typeof (window as any).updateFrameCounter === 'function') {
+            (window as any).updateFrameCounter();
+        }
+    }, 200);
 }
 
 function loadAnimationPreferences() {

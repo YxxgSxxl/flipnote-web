@@ -256,6 +256,13 @@ export function loadFramesFromStorage(): boolean {
     frames.forEach(frame => frame.remove());
     frames = [];
 
+    // Récupérer la liste des frames par index
+    const frameIndices = Object.keys(parsedData.frames).map(index => parseInt(index));
+    const maxIndex = Math.max(...frameIndices, -1);
+
+    // Créer un tableau de frames correctement dimensionné
+    frames = new Array(maxIndex + 1);
+
     // Recreate frames from saved data
     Object.entries(parsedData.frames).forEach(([frameIndex, frameData]) => {
       const frame = new paper.Group();
@@ -283,8 +290,10 @@ export function loadFramesFromStorage(): boolean {
       frames[0].visible = true;
     }
 
-    // Update the frame indicator in the UI
-    updateFrameIndicator();
+    // Update the frame indicator in the UI - avec un petit délai pour s'assurer que le DOM est prêt
+    setTimeout(() => {
+      updateFrameIndicator();
+    }, 100);
 
     console.log(`Loaded ${frames.length} frames, restored to frame: ${currentFrameIndex}`);
     return true;
@@ -413,10 +422,18 @@ export function getCurrentFrame(): paper.Group | null {
   return frames[currentFrameIndex] || null;
 }
 
+export function getCurrentFrameIndex(): number {
+  return currentFrameIndex;
+}
+
 export function getFramesCount(): number {
   return frames.length;
 }
 
 export function initializeFrameSystem() {
   setupFrames();
+
+  setTimeout(() => {
+    updateFrameIndicator();
+  }, 500);
 }
