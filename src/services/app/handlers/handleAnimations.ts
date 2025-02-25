@@ -130,12 +130,10 @@ export function setupOnionSkinningControls() {
         if (opacityValue) {
             opacityValue.textContent = `${opacity}%`;
         }
-        setOnionSkinningOpacity(opacity / 100); // Convertir le pourcentage en valeur entre 0 et 1.
     }
 
     if (savedPrevFrames && prevFramesSelect) {
         prevFramesSelect.value = savedPrevFrames;
-        setOnionSkinningFrames(parseInt(savedPrevFrames), 0);
     }
 
     // Configuration des événements
@@ -152,7 +150,6 @@ export function setupOnionSkinningControls() {
             if (opacityValue) {
                 opacityValue.textContent = `${opacity}%`;
             }
-            setOnionSkinningOpacity(opacity / 100);
             localStorage.setItem('onionSkinningOpacity', opacity.toString());
         });
     }
@@ -160,7 +157,6 @@ export function setupOnionSkinningControls() {
     if (prevFramesSelect) {
         prevFramesSelect.addEventListener('change', () => {
             const prevFrames = parseInt(prevFramesSelect.value);
-            setOnionSkinningFrames(prevFrames, 0);
             localStorage.setItem('onionSkinningPrevFrames', prevFrames.toString());
         });
     }

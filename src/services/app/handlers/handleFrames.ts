@@ -113,7 +113,15 @@ function createOnionSkinLayer(sourceFrame: paper.Group, sourceIndex: number) {
   });
 
   // Placer cette couche derrière la couche active
-  onionLayer.moveBelow(paper.project.activeLayer);
+  // Utiliser une approche différente pour déplacer la couche
+  const activeIndex = paper.project.layers.indexOf(paper.project.activeLayer);
+  if (activeIndex > 0) {
+    paper.project.insertLayer(activeIndex - 1, onionLayer);
+  } else {
+    // Si la couche active est déjà la première,
+    // ajoutez la couche d'onion à l'index 0 et déplacez la couche active
+    paper.project.insertLayer(0, onionLayer);
+  }
 }
 
 // Fonction auxiliaire pour obtenir la couche (layer) d'une frame
