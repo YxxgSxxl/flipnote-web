@@ -6,7 +6,7 @@ import {
     getFramesCount,
     clearCurrentFrame,
     deleteCurrentFrame, toggleOnionSkinning
-} from "../handlers/handleFrames.ts";
+} from "./handleFrames.ts";
 
 export let animationPlaying: boolean = false;
 let animationInterval: number | null = null;

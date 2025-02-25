@@ -18,7 +18,7 @@ import {
 import { AnimateTools } from "../../../components/animateTools.ts";
 import { DrawingTools } from "../../../components/drawingTools.ts";
 
-// Instantiate Paper.js
+// Paper.js status
 document.addEventListener("DOMContentLoaded", () => {
   console.log("Paper.js status:", {
     project: paper.project ? "loaded" : "not loaded",
@@ -27,10 +27,7 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 });
 
-// DEBUG PURPOSE
-console.log(localStorage)
-
-export function injectPage() {
+export function injectApp() {
   document.querySelector<HTMLDivElement>("#app")!.innerHTML = `
         <main>        
             <div class="canvas-container">
@@ -46,29 +43,16 @@ export function injectPage() {
         </main>
     `;
 
-  // Add animation styles
-  addAnimationStyles();
-
   canvasInit();
+
   setupToolsEvents();
   setupAnimationsEvents();
+
   setupFrameControls();
-  setupOnionSkinningControls(); // Nouvelle fonction pour configurer les contrôles d'onion skinning
+  setupOnionSkinningControls();
 
   // Set up animation preview indicator
   setupAnimationPreviewIndicator();
-}
-
-function addAnimationStyles() {
-  // Check if the styles are already added
-  if (document.getElementById('animation-styles')) return;
-
-  const styleSheet = document.createElement('style');
-  styleSheet.id = 'animation-styles';
-  styleSheet.textContent = `
-
-  `;
-  document.head.appendChild(styleSheet);
 }
 
 function setupAnimationPreviewIndicator() {

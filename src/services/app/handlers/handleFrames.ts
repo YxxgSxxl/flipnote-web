@@ -67,7 +67,7 @@ export function updateOnionSkinning() {
     createOnionSkinLayer(frames[prevIndex], prevIndex);
   }
 
-  // IMPORTANT: Au lieu de définir directement activeLayer, activons la couche appropriée
+  // IMPORTANT : Au lieu de définir directement activeLayer, activons la couche appropriée
   const frameLayer = getFrameLayer(currentFrameIndex);
   frameLayer.activate();
 }
@@ -88,7 +88,7 @@ function createOnionSkinLayer(sourceFrame: paper.Group, sourceIndex: number) {
   sourceFrame.children.forEach(child => {
     const clone = child.clone();
 
-    // Appliquer une teinte rouge claire aux clones
+    // Appliquer une teinte rouge clair aux clones
     if (clone instanceof paper.Path) {
       if (clone.fillColor) {
         const originalColor = clone.fillColor;
@@ -119,7 +119,7 @@ function createOnionSkinLayer(sourceFrame: paper.Group, sourceIndex: number) {
     paper.project.insertLayer(activeIndex - 1, onionLayer);
   } else {
     // Si la couche active est déjà la première,
-    // ajoutez la couche d'onion à l'index 0 et déplacez la couche active
+    // ajoutez la couche onion à l'index zero et déplacez la couche active.
     paper.project.insertLayer(0, onionLayer);
   }
 }
@@ -225,14 +225,13 @@ function deserializeItem(itemData: ItemData): paper.Item | null {
 
     // Special handling for circles
     if (pathData.isCircle && pathData.center && pathData.radius) {
-      const circle = new paper.Path.Circle({
+      return new paper.Path.Circle({
         center: new paper.Point(pathData.center.x, pathData.center.y),
         radius: pathData.radius,
         fillColor: pathData.fillColor ? new paper.Color(pathData.fillColor) : 'white',
         strokeWidth: 0,
         strokeColor: null
       });
-      return circle;
     }
 
     // Regular path
@@ -396,7 +395,7 @@ export function loadFramesFromStorage(): boolean {
       frames[0].visible = true;
     }
 
-    // Update the frame indicator in the UI - avec un petit délai pour s'assurer que le DOM est prêt
+    // Update the frame indicator in the UI avec un petit délai pour s'assurer que le DOM est prêt
     setTimeout(() => {
       updateFrameIndicator();
     }, 100);
@@ -415,7 +414,7 @@ export function updateFrameIndicator() {
   const frameIndicator = document.getElementById('frame-indicator');
   if (frameIndicator) {
     // S'assurer que nous avons le bon nombre de frames
-    const framesCount = frames.length || 1; // Éviter l'affichage de 0
+    const framesCount = frames.length || 1; // Éviter l'affichage de zero.
     frameIndicator.textContent = `Frame: ${currentFrameIndex + 1}/${framesCount}`;
     console.log(`Updated frame indicator: ${currentFrameIndex + 1}/${framesCount}`);
   }
@@ -456,7 +455,7 @@ export function addFrame() {
     // Insérer au milieu
     frames.splice(insertIndex, 0, newFrame);
   } else {
-    // Ou ajouter à la fin si on est déjà à la dernière frame
+    // Où ajouter à la fin si on est déjà à la dernière frame
     frames.push(newFrame);
   }
 
@@ -491,7 +490,7 @@ export function switchToFrame(index: number): number | null {
   // Mettre à jour l'onion skinning après avoir changé de frame
   updateOnionSkinning();
 
-  // IMPORTANT: Utiliser la méthode activate() au lieu de définir activeLayer
+  // IMPORTANT : Utiliser la méthode activate() au lieu de définir activeLayer
   const frameLayer = getFrameLayer(currentFrameIndex);
   frameLayer.activate();
 
@@ -583,7 +582,7 @@ export function initializeFrameSystem() {
     frameLayer.activate();
   }
 
-  // Forcer une mise à jour de l'indicateur de frame après que tout soit chargé
+  // Forcer une mise à jour de l'indicateur de frame après que tout est chargé
   setTimeout(() => {
     updateFrameIndicator();
   }, 500);
