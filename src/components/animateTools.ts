@@ -31,6 +31,9 @@ export function AnimateTools() {
                 <button id="OnionSkin" title="Toggle Onion Skinning" class="onion-skin">
                     <img src="/img/icons/onion_32x32.png" alt="Onion Skin Icon" width="32" height="32">
                 </button>
+                <button id="ExportGif" title="Export Animation as GIF">
+                    <img src="/img/icons/export_32x32.png" alt="Export GIF Icon" width="32" height="32">
+                </button>
             </div>
         </div>
     `;

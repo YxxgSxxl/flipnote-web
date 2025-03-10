@@ -13,6 +13,7 @@ import {
   animationPlaying,
   setupOnionSkinningControls
 } from "../handlers/handleAnimations.ts";
+import {setupExportEvents} from "../handlers/handleExport.ts";
 
 // Components imports
 import { AnimateTools } from "../../../components/animateTools.ts";
@@ -47,6 +48,7 @@ export function injectApp() {
 
   setupToolsEvents();
   setupAnimationsEvents();
+  setupExportEvents();
 
   setupFrameControls();
   setupOnionSkinningControls();

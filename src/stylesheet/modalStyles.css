@@ -1,0 +1,177 @@
+/* Modal Styles */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal.hidden {
+    display: none;
+}
+
+.modal-content {
+    background-color: white;
+    border-radius: 8px;
+    width: 400px;
+    max-width: 90%;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+    border-bottom: 1px solid #eee;
+}
+
+.modal-header h2 {
+    margin: 0;
+    font-size: 1.2rem;
+    font-weight: 600;
+}
+
+.close-button {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: #666;
+}
+
+.close-button:hover {
+    color: #000;
+}
+
+.modal-body {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.modal-footer {
+    padding: 15px 20px;
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    border-top: 1px solid #eee;
+}
+
+.primary-button {
+    padding: 8px 16px;
+    background-color: #4a6da7;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.primary-button:hover {
+    background-color: #3a5d97;
+}
+
+.secondary-button {
+    padding: 8px 16px;
+    background-color: #e2e2e2;
+    color: #333;
+    border: none;
+    border-radius: 4px;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.secondary-button:hover {
+    background-color: #d2d2d2;
+}
+
+.option-group {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.option-group select {
+    width: 60%;
+    padding: 8px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+}
+
+.progress-container {
+    margin-top: 10px;
+}
+
+.progress-text {
+    text-align: center;
+    margin-bottom: 8px;
+    font-size: 14px;
+}
+
+.progress-bar-container {
+    height: 10px;
+    background-color: #eee;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.progress-bar {
+    height: 100%;
+    width: 0%;
+    background-color: #4a6da7;
+    transition: width 0.3s ease;
+}
+
+/* Dark mode adjustments */
+@media (prefers-color-scheme: dark) {
+    .modal-content {
+        background-color: #203548;
+        color: var(--app-c-text-light);
+    }
+
+    .modal-header {
+        border-bottom-color: #384a59;
+    }
+
+    .modal-footer {
+        border-top-color: #384a59;
+    }
+
+    .close-button {
+        color: #aaa;
+    }
+
+    .close-button:hover {
+        color: #fff;
+    }
+
+    .secondary-button {
+        background-color: #384a59;
+        color: var(--app-c-text-light);
+    }
+
+    .secondary-button:hover {
+        background-color: #455b6c;
+    }
+
+    .option-group select {
+        background-color: #152330;
+        color: var(--app-c-text-light);
+        border-color: #66898f;
+    }
+
+    .progress-bar-container {
+        background-color: rgba(255, 255, 255, 0.1);
+    }
+}

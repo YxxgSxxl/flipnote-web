@@ -12,7 +12,7 @@ export let animationPlaying: boolean = false;
 let animationInterval: number | null = null;
 const LOW_FPS = 8;  // Slower animation fps
 const STANDARD_FPS = 12; // Standard animation fps
-let currentFps = STANDARD_FPS; // Default to standard fps
+export let currentFps = STANDARD_FPS; // Default to standard fps
 let loopAnimation = true; // Whether animation should loop by default
 
 export function setupAnimationsEvents() {
@@ -309,6 +309,9 @@ export function goToLastFrame() {
     }
 }
 
+export function getCurrentFps(): number {
+    return currentFps;
+}
 
 export function setupFrameControls() {
     document.getElementById("AddFrame")?.addEventListener("click", addFrame);
@@ -352,6 +355,6 @@ export function setupFrameControls() {
         if (button) {
             button.classList.add("active");
         }
-        toggleOnionSkinning(); // Activer l'onion skinning
+        toggleOnionSkinning();
     }
 }
