@@ -411,7 +411,34 @@ export function loadFramesFromStorage(): boolean {
 // Update the frame indicator in the UI
 export function updateFrameIndicator() {
   // Find frame indicator if it exists
-  const frameIndicator = document.getElementById('frame-indicator');
+  let frameIndicator = document.getElementById('frame-indicator');
+
+  // Si l'indicateur n'existe pas, essayer de le recréer
+  if (!frameIndicator) {
+    // Vérifier si le conteneur des contrôles FPS existe
+    const fpsControls = document.getElementById('fps-controls');
+    if (fpsControls) {
+      // Créer un nouvel indicateur de frame
+      frameIndicator = document.createElement('span');
+      frameIndicator.id = 'frame-indicator';
+      fpsControls.appendChild(frameIndicator);
+    } else {
+      // Si le conteneur n'existe pas non plus, tenter de forcer la recréation des contrôles
+      import('./handleAnimations.js').then(module => {
+        if (typeof module.setupAnimationsEvents === 'function') {
+          module.setupAnimationsEvents();
+          // Réessayer après un court délai
+          setTimeout(() => {
+            updateFrameIndicator();
+          }, 100);
+        }
+      }).catch(err => {
+        console.error('Erreur lors du chargement de handleAnimations:', err);
+      });
+      return;
+    }
+  }
+
   if (frameIndicator) {
     // S'assurer que nous avons le bon nombre de frames
     const framesCount = frames.length || 1; // Éviter l'affichage de zero.

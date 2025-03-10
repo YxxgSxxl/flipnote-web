@@ -222,7 +222,7 @@ function loadGifJsLibrary(): Promise<void> {
 
         script.onload = () => {
             console.log("GIF.js loaded successfully");
-            statusElement.textContent = 'GIF.js loaded successfully!';
+            statusElement.textContent = 'App loaded successfully!';
 
             // Nettoyer après 2 secondes
             setTimeout(() => {
@@ -242,6 +242,24 @@ function loadGifJsLibrary(): Promise<void> {
 
         document.head.appendChild(script);
     });
+}
+
+export function preloadGifLibrary() {
+    console.log("Préchargement de GIF.js...");
+
+    // Ne précharge pas si déjà chargé
+    if (window.GIF) {
+        console.log("GIF.js déjà chargé");
+        return Promise.resolve();
+    }
+
+    return loadGifJsLibrary()
+        .then(() => {
+            console.log("GIF.js préchargé avec succès");
+        })
+        .catch(error => {
+            console.error("Échec du préchargement de GIF.js:", error);
+        });
 }
 
 function processGifExport() {

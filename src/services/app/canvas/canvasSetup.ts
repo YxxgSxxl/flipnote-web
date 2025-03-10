@@ -13,7 +13,7 @@ import {
   animationPlaying,
   setupOnionSkinningControls
 } from "../handlers/handleAnimations.ts";
-import {setupExportEvents} from "../handlers/handleExport.ts";
+import {setupExportEvents, preloadGifLibrary} from "../handlers/handleExport.ts";
 
 // Components imports
 import { AnimateTools } from "../../../components/animateTools.ts";
@@ -28,6 +28,7 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 });
 
+// Dans la fonction injectApp(), ajoutez l'appel à preloadGifLibrary
 export function injectApp() {
   document.querySelector<HTMLDivElement>("#app")!.innerHTML = `
         <main>        
@@ -46,15 +47,27 @@ export function injectApp() {
 
   canvasInit();
 
+  // Préchargement de GIF.js dès le début
+  preloadGifLibrary();
+
+  // Initialiser les outils et animations
   setupToolsEvents();
   setupAnimationsEvents();
   setupExportEvents();
 
+  // Assurez-vous que ces fonctions sont appelées après les précédentes
   setupFrameControls();
   setupOnionSkinningControls();
 
   // Set up animation preview indicator
   setupAnimationPreviewIndicator();
+
+  // Forcer une mise à jour de l'indicateur de frame après un délai
+  setTimeout(() => {
+    if (typeof (window as any).updateFrameCounter === 'function') {
+      (window as any).updateFrameCounter();
+    }
+  }, 500);
 }
 
 function setupAnimationPreviewIndicator() {

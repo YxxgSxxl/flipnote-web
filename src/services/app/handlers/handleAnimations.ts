@@ -31,8 +31,8 @@ export function setupAnimationsEvents() {
         }
     });
 
-    // Add FPS controls if they don't exist
-    setupFpsControls();
+    // Force la recréation des contrôles FPS à chaque fois
+    setupFpsControls(true);
 }
 
 function isInputFocused() {
@@ -41,17 +41,25 @@ function isInputFocused() {
         activeElement instanceof HTMLTextAreaElement;
 }
 
-function setupFpsControls() {
-    // Check if controls already exist
-    if (document.getElementById('fps-controls')) return;
+function setupFpsControls(forceUpdate = false) {
+    // Vérifier si les contrôles existent déjà
+    const existingControls = document.getElementById('fps-controls');
 
-    // Create FPS controls container
+    // Si les contrôles existent et qu'on ne force pas la mise à jour, sortir
+    if (existingControls && !forceUpdate) return;
+
+    // Si on force la mise à jour et que les contrôles existent, les supprimer
+    if (existingControls && forceUpdate) {
+        existingControls.remove();
+    }
+
+    // Charger les préférences sauvegardées
+    loadAnimationPreferences();
+
+    // Créer un nouvel élément pour les contrôles FPS
     const fpsControls = document.createElement('div');
     fpsControls.id = 'fps-controls';
     fpsControls.classList.add('animation-controls');
-
-    // Load saved preferences
-    loadAnimationPreferences();
 
     fpsControls.innerHTML = `
         <div class="fps-toggle">
@@ -60,46 +68,50 @@ function setupFpsControls() {
             </button>
         </div>
         <label for="loop-checkbox" class="loop-label">
-        
             <input type="checkbox" id="loop-checkbox" ${loopAnimation ? 'checked' : ''}>
             Loop
         </label>
         <span id="frame-indicator">Frame: 1/1</span>
     `;
 
-    // Find the animatebox to insert controls after it
+    // Trouver la animateBox pour insérer les contrôles après
     const animateBox = document.querySelector('.animateBox');
     if (animateBox && animateBox.parentNode) {
         animateBox.parentNode.insertBefore(fpsControls, animateBox.nextSibling);
 
-        // Add event listeners for new controls
+        // Ajouter les écouteurs d'événements pour les nouveaux contrôles
         const fpsToggleBtn = document.getElementById('fps-toggle-btn');
         const loopCheckbox = document.getElementById('loop-checkbox') as HTMLInputElement;
 
-        fpsToggleBtn?.addEventListener('click', () => {
-            currentFps = currentFps === STANDARD_FPS ? LOW_FPS : STANDARD_FPS;
-            if (fpsToggleBtn) {
-                fpsToggleBtn.textContent = `${currentFps}fps`;
-                fpsToggleBtn.className = currentFps === STANDARD_FPS ? 'standard-fps' : 'low-fps';
-            }
+        if (fpsToggleBtn) {
+            fpsToggleBtn.addEventListener('click', () => {
+                currentFps = currentFps === STANDARD_FPS ? LOW_FPS : STANDARD_FPS;
+                if (fpsToggleBtn) {
+                    fpsToggleBtn.textContent = `${currentFps}fps`;
+                    fpsToggleBtn.className = currentFps === STANDARD_FPS ? 'standard-fps' : 'low-fps';
+                }
 
-            // If animation is playing, restart it with new FPS
-            if (animationPlaying) {
-                stopAnimation();
-                startAnimation();
-            }
+                // Si l'animation est en cours, la redémarrer avec le nouveau FPS
+                if (animationPlaying) {
+                    stopAnimation();
+                    startAnimation();
+                }
 
-            // Save preference
-            localStorage.setItem('animationFps', currentFps.toString());
-        });
+                // Sauvegarder la préférence
+                localStorage.setItem('animationFps', currentFps.toString());
+            });
+        }
 
-        loopCheckbox?.addEventListener('change', () => {
-            loopAnimation = loopCheckbox.checked;
-            // Save preference
-            localStorage.setItem('animationLoop', loopAnimation.toString());
-        });
+        if (loopCheckbox) {
+            loopCheckbox.addEventListener('change', () => {
+                loopAnimation = loopCheckbox.checked;
+                // Sauvegarder la préférence
+                localStorage.setItem('animationLoop', loopAnimation.toString());
+            });
+        }
     }
 
+    // Mettre à jour l'indicateur de frame après un court délai
     setTimeout(() => {
         if (typeof (window as any).updateFrameCounter === 'function') {
             (window as any).updateFrameCounter();
