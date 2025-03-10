@@ -35,18 +35,18 @@ interface StoredData {
 let frames: paper.Group[] = [];
 let currentFrameIndex = 0;
 
-// Variables pour gérer l'onion skinning
+// Variables pour gérer onion skinning
 let onionSkinningEnabled = false;
 const onionSkinningOpacity = 0.3; // Opacité fixe à 0.3
 
-// Fonction pour activer/désactiver l'onion skinning
+// Fonction pour activer/désactiver onion skinning
 export function toggleOnionSkinning() {
   onionSkinningEnabled = !onionSkinningEnabled;
   updateOnionSkinning();
   return onionSkinningEnabled;
 }
 
-// Fonction pour mettre à jour l'onion skinning
+// Fonction pour mettre à jour onion skinning
 export function updateOnionSkinning() {
   // Supprimer d'abord tous les clones d'onion skinning existants
   for (let i = paper.project.layers.length - 1; i >= 0; i--) {
@@ -56,7 +56,7 @@ export function updateOnionSkinning() {
     }
   }
 
-  // Si l'onion skinning est désactivé, on s'arrête ici
+  // Si onion skinning est désactivé, on s'arrête ici
   if (!onionSkinningEnabled || frames.length <= 1) {
     return;
   }

@@ -121,7 +121,7 @@ export function setupOnionSkinningControls() {
     // Appliquer les préférences sauvegardées
     if (savedOnionEnabled === 'true' && onionToggle) {
         onionToggle.checked = true;
-        toggleOnionSkinning(); // Activer l'onion skinning
+        toggleOnionSkinning();
     }
 
     if (savedOpacity && opacitySlider) {
