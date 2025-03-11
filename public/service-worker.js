@@ -46,22 +46,16 @@ self.addEventListener('install', (event) => {
             .then((cache) => {
                 console.log('Mise en cache des ressources');
 
-                // D'abord, mettre en cache les ressources critiques
-                const criticalResources = [
-                    '/lib/gif.js',
-                    '/lib/gif.worker.js',
-                ];
-
-                return Promise.all(
-                    criticalResources.map(url =>
-                        cache.add(url).catch(error => {
-                            console.error(`Échec de mise en cache de ${url}:`, error);
-                        })
+                // Méthode robuste pour cacher les ressources (ignore les échecs individuels)
+                return Promise.allSettled(
+                    RESOURCES_TO_CACHE.map(url =>
+                        cache.add(url)
+                            .catch(error => {
+                                console.error(`Échec de mise en cache de ${url}:`, error);
+                                // Ne pas faire échouer le processus complet
+                            })
                     )
-                ).then(() => {
-                    // Ensuite, mettre en cache les autres ressources
-                    return cache.addAll(RESOURCES_TO_CACHE.filter(url => !criticalResources.includes(url)));
-                });
+                );
             })
             .then(() => {
                 // Forcer l'activation du service worker sans attendre la fermeture des onglets
