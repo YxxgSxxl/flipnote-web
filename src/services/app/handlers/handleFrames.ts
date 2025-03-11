@@ -1,4 +1,4 @@
-import paper from "paper";
+import paper from 'paper';
 
 interface PathData {
   pathData: string;
@@ -6,7 +6,7 @@ interface PathData {
   strokeWidth: number;
   fillColor?: string;
   isCircle?: boolean;
-  center?: { x: number, y: number };
+  center?: { x: number; y: number };
   radius?: number;
 }
 
@@ -81,7 +81,7 @@ function createOnionSkinLayer(sourceFrame: paper.Group, sourceIndex: number) {
   // Marquer cette couche comme étant une couche d'onion skinning pour la retrouver facilement
   onionLayer.data = {
     isOnionSkin: true,
-    sourceIndex: sourceIndex
+    sourceIndex: sourceIndex,
   };
 
   // Cloner tous les éléments de la frame source
@@ -93,18 +93,18 @@ function createOnionSkinLayer(sourceFrame: paper.Group, sourceIndex: number) {
       if (clone.fillColor) {
         const originalColor = clone.fillColor;
         clone.fillColor = new paper.Color(
-            Math.min(1, originalColor.red * 1.2),
-            originalColor.green * 0.8,
-            originalColor.blue * 0.8
+          Math.min(1, originalColor.red * 1.2),
+          originalColor.green * 0.8,
+          originalColor.blue * 0.8
         );
       }
 
       if (clone.strokeColor) {
         const originalColor = clone.strokeColor;
         clone.strokeColor = new paper.Color(
-            Math.min(1, originalColor.red * 1.2),
-            originalColor.green * 0.8,
-            originalColor.blue * 0.8
+          Math.min(1, originalColor.red * 1.2),
+          originalColor.green * 0.8,
+          originalColor.blue * 0.8
         );
       }
     }
@@ -144,7 +144,7 @@ function serializeItem(item: paper.Item): ItemData {
     const pathData: PathData = {
       pathData: item.pathData,
       strokeColor: item.strokeColor ? item.strokeColor.toCSS(true) : null,
-      strokeWidth: item.strokeWidth || 0
+      strokeWidth: item.strokeWidth || 0,
     };
 
     if (item.fillColor) {
@@ -154,12 +154,14 @@ function serializeItem(item: paper.Item): ItemData {
     // Special handling for circles (eraser)
     if (item.className === 'Path' && item.segments.length <= 8 && item.closed) {
       // Check if it's likely a circle by approximation
-      if (item.bounds.width === item.bounds.height &&
-          Math.abs(item.bounds.width - item.segments.length * 8 / Math.PI) < 2) {
+      if (
+        item.bounds.width === item.bounds.height &&
+        Math.abs(item.bounds.width - (item.segments.length * 8) / Math.PI) < 2
+      ) {
         pathData.isCircle = true;
         pathData.center = {
           x: item.bounds.center.x,
-          y: item.bounds.center.y
+          y: item.bounds.center.y,
         };
         pathData.radius = item.bounds.width / 2;
       }
@@ -167,10 +169,9 @@ function serializeItem(item: paper.Item): ItemData {
 
     return {
       type: 'path',
-      data: pathData
+      data: pathData,
     };
-  }
-  else if (item instanceof paper.Group) {
+  } else if (item instanceof paper.Group) {
     const groupData: GroupData = {
       type: 'group',
       children: item.children.map(child => {
@@ -183,9 +184,9 @@ function serializeItem(item: paper.Item): ItemData {
         return {
           pathData: '',
           strokeColor: null,
-          strokeWidth: 0
+          strokeWidth: 0,
         };
-      })
+      }),
     };
 
     // Save any special metadata
@@ -203,7 +204,7 @@ function serializeItem(item: paper.Item): ItemData {
 
     return {
       type: 'group',
-      data: groupData
+      data: groupData,
     };
   }
 
@@ -213,8 +214,8 @@ function serializeItem(item: paper.Item): ItemData {
     data: {
       pathData: '',
       strokeColor: null,
-      strokeWidth: 0
-    }
+      strokeWidth: 0,
+    },
   };
 }
 
@@ -230,7 +231,7 @@ function deserializeItem(itemData: ItemData): paper.Item | null {
         radius: pathData.radius,
         fillColor: pathData.fillColor ? new paper.Color(pathData.fillColor) : 'white',
         strokeWidth: 0,
-        strokeColor: null
+        strokeColor: null,
       });
     }
 
@@ -251,8 +252,7 @@ function deserializeItem(itemData: ItemData): paper.Item | null {
     }
 
     return path;
-  }
-  else if (itemData.type === 'group') {
+  } else if (itemData.type === 'group') {
     const groupData = itemData.data as GroupData;
     const group = new paper.Group();
 
@@ -294,18 +294,18 @@ function deserializeItem(itemData: ItemData): paper.Item | null {
         group.addChild(childPath);
       } else if ('isCircle' in childData && 'center' in childData && 'radius' in childData) {
         // C'est un cercle
-        const circle = childData as unknown as (PathData & {
+        const circle = childData as unknown as PathData & {
           isCircle: boolean;
-          center: { x: number, y: number };
+          center: { x: number; y: number };
           radius: number;
-        });
+        };
 
         const childCircle = new paper.Path.Circle({
           center: new paper.Point(circle.center.x, circle.center.y),
           radius: circle.radius,
           fillColor: circle.fillColor ? new paper.Color(circle.fillColor) : 'white',
           strokeWidth: 0,
-          strokeColor: null
+          strokeColor: null,
         });
 
         group.addChild(childCircle);
@@ -313,7 +313,7 @@ function deserializeItem(itemData: ItemData): paper.Item | null {
         // C'est un groupe imbriqué
         const nestedItem = deserializeItem({
           type: 'group',
-          data: childData as GroupData
+          data: childData as GroupData,
         });
         if (nestedItem) {
           group.addChild(nestedItem);
@@ -332,13 +332,13 @@ export function saveFramesToStorage() {
 
   frames.forEach((frame, index) => {
     frameData[index] = {
-      items: frame.children.map(child => serializeItem(child))
+      items: frame.children.map(child => serializeItem(child)),
     };
   });
 
   const dataToSave: StoredData = {
     currentFrameIndex,
-    frames: frameData
+    frames: frameData,
   };
 
   try {
@@ -424,17 +424,19 @@ export function updateFrameIndicator() {
       fpsControls.appendChild(frameIndicator);
     } else {
       // Si le conteneur n'existe pas non plus, tenter de forcer la recréation des contrôles
-      import('./handleAnimations.js').then(module => {
-        if (typeof module.setupAnimationsEvents === 'function') {
-          module.setupAnimationsEvents();
-          // Réessayer après un court délai
-          setTimeout(() => {
-            updateFrameIndicator();
-          }, 100);
-        }
-      }).catch(err => {
-        console.error('Erreur lors du chargement de handleAnimations:', err);
-      });
+      import('./handleAnimations.js')
+        .then(module => {
+          if (typeof module.setupAnimationsEvents === 'function') {
+            module.setupAnimationsEvents();
+            // Réessayer après un court délai
+            setTimeout(() => {
+              updateFrameIndicator();
+            }, 100);
+          }
+        })
+        .catch(err => {
+          console.error('Erreur lors du chargement de handleAnimations:', err);
+        });
       return;
     }
   }

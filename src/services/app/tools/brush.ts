@@ -1,6 +1,6 @@
-import paper from "paper";
+import paper from 'paper';
 import { getCurrentFrame, saveFramesToStorage } from '../handlers/handleFrames';
-import { animationPlaying } from "../handlers/handleAnimations";
+import { animationPlaying } from '../handlers/handleAnimations';
 
 export class Brush {
   private tool: paper.Tool;
@@ -11,7 +11,7 @@ export class Brush {
     this.tool = new paper.Tool();
 
     // Load saved stroke width
-    const savedStrokeWidth = localStorage.getItem("brushStrokeWidth");
+    const savedStrokeWidth = localStorage.getItem('brushStrokeWidth');
     if (savedStrokeWidth) {
       Brush.strokeWidth = parseInt(savedStrokeWidth, 10);
       this.updateButtonState(Brush.strokeWidth);
@@ -23,7 +23,7 @@ export class Brush {
 
       // Create new path
       this.path = new paper.Path();
-      this.path.strokeColor = new paper.Color("black");
+      this.path.strokeColor = new paper.Color('black');
       this.path.strokeWidth = Brush.strokeWidth;
       this.path.add(event.point);
 
@@ -58,22 +58,22 @@ export class Brush {
 
   private updateButtonState(strokeWidth: number) {
     // Remove active class from all buttons
-    document.querySelectorAll<HTMLButtonElement>(".brush-size").forEach(button => {
-      button.classList.remove("active");
+    document.querySelectorAll<HTMLButtonElement>('.brush-size').forEach(button => {
+      button.classList.remove('active');
     });
 
     // Map stroke width to button ID
     const sizeMap: Record<number, string> = {
-      3: "brush-small",
-      5: "brush-medium",
-      8: "brush-large"
+      3: 'brush-small',
+      5: 'brush-medium',
+      8: 'brush-large',
     };
 
     // Add active class to current size button
     const buttonId = sizeMap[strokeWidth];
     if (buttonId) {
       const button = document.querySelector(`button#${buttonId}`);
-      button?.classList.add("active");
+      button?.classList.add('active');
     }
   }
 
@@ -88,17 +88,17 @@ export class Brush {
     let newStrokeWidth: number;
 
     switch (size) {
-      case "Small":
+      case 'Small':
         newStrokeWidth = 3;
         break;
-      case "Medium":
+      case 'Medium':
         newStrokeWidth = 5;
         break;
-      case "Large":
+      case 'Large':
         newStrokeWidth = 8;
         break;
       default:
-        console.warn("Invalid brush size");
+        console.warn('Invalid brush size');
         return;
     }
 
@@ -106,29 +106,29 @@ export class Brush {
     this.updateButtonState(newStrokeWidth);
 
     // Save stroke width to localStorage
-    localStorage.setItem("brushStrokeWidth", newStrokeWidth.toString());
+    localStorage.setItem('brushStrokeWidth', newStrokeWidth.toString());
 
     // Also save the size name for persistence
-    localStorage.setItem("brushSize", size);
+    localStorage.setItem('brushSize', size);
 
     console.log(`Brush size set to: ${size}`);
   }
 }
 
 // Initialize brush size buttons
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener('DOMContentLoaded', () => {
   const brush = new Brush();
 
   // Set up size button event listeners
   const sizeButtons = [
-    { id: "brush-small", size: "Small" },
-    { id: "brush-medium", size: "Medium" },
-    { id: "brush-large", size: "Large" }
+    { id: 'brush-small', size: 'Small' },
+    { id: 'brush-medium', size: 'Medium' },
+    { id: 'brush-large', size: 'Large' },
   ];
 
   sizeButtons.forEach(({ id, size }) => {
     const button = document.querySelector(`button#${id}`);
-    button?.addEventListener("click", () => {
+    button?.addEventListener('click', () => {
       // Only respond if animation is not playing
       if (!animationPlaying) {
         brush.setBrushSize(size);
@@ -137,12 +137,12 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   // Set initial active state based on saved stroke width
-  const savedStrokeWidth = localStorage.getItem("brushStrokeWidth");
+  const savedStrokeWidth = localStorage.getItem('brushStrokeWidth');
   if (savedStrokeWidth) {
     const sizeMap: Record<number, string> = {
-      3: "Small",
-      5: "Medium",
-      8: "Large"
+      3: 'Small',
+      5: 'Medium',
+      8: 'Large',
     };
     const size = sizeMap[parseInt(savedStrokeWidth, 10)];
     if (size) {

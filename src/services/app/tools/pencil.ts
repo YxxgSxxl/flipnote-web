@@ -1,4 +1,4 @@
-import paper from "paper";
+import paper from 'paper';
 import { getCurrentFrame, saveFramesToStorage } from '../handlers/handleFrames';
 
 export class Pencil {
@@ -11,7 +11,7 @@ export class Pencil {
     this.tool = new paper.Tool();
 
     // Load saved stroke width
-    const savedStrokeWidth = localStorage.getItem("pencilStrokeWidth");
+    const savedStrokeWidth = localStorage.getItem('pencilStrokeWidth');
     if (savedStrokeWidth) {
       Pencil.strokeWidth = parseInt(savedStrokeWidth, 10);
       this.updateButtonState(Pencil.strokeWidth);
@@ -50,22 +50,22 @@ export class Pencil {
 
   private updateButtonState(strokeWidth: number) {
     // Remove active class from all buttons
-    document.querySelectorAll<HTMLButtonElement>(".pencil-size").forEach(button => {
-      button.classList.remove("active");
+    document.querySelectorAll<HTMLButtonElement>('.pencil-size').forEach(button => {
+      button.classList.remove('active');
     });
 
     // Map stroke width to button ID
     const sizeMap: Record<number, string> = {
-      5: "pencil-small",
-      8: "pencil-medium",
-      10: "pencil-large"
+      5: 'pencil-small',
+      8: 'pencil-medium',
+      10: 'pencil-large',
     };
 
     // Add active class to current size button
     const buttonId = sizeMap[strokeWidth];
     if (buttonId) {
       const button = document.querySelector(`button#${buttonId}`);
-      button?.classList.add("active");
+      button?.classList.add('active');
     }
   }
 
@@ -74,9 +74,9 @@ export class Pencil {
     const rect = new paper.Path.Rectangle({
       point: new paper.Point(point.x - size / 2, point.y - size / 2),
       size: [size, size],
-      fillColor: "black",
+      fillColor: 'black',
       strokeWidth: 0, // No stroke border
-      strokeColor: null // No stroke color
+      strokeColor: null, // No stroke color
     });
     if (this.path) {
       this.path.addChild(rect);
@@ -120,17 +120,17 @@ export class Pencil {
     let newStrokeWidth: number;
 
     switch (size) {
-      case "Small":
+      case 'Small':
         newStrokeWidth = 5;
         break;
-      case "Medium":
+      case 'Medium':
         newStrokeWidth = 8;
         break;
-      case "Large":
+      case 'Large':
         newStrokeWidth = 10;
         break;
       default:
-        console.warn("Invalid pencil size");
+        console.warn('Invalid pencil size');
         return;
     }
 
@@ -138,40 +138,40 @@ export class Pencil {
     this.updateButtonState(newStrokeWidth);
 
     // Save stroke width to localStorage
-    localStorage.setItem("pencilStrokeWidth", newStrokeWidth.toString());
+    localStorage.setItem('pencilStrokeWidth', newStrokeWidth.toString());
 
     // Also save the size name for persistence
-    localStorage.setItem("pencilSize", size);
+    localStorage.setItem('pencilSize', size);
 
     console.log(`Pencil size set to: ${size}`);
   }
 }
 
 // Initialize pencil size buttons
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener('DOMContentLoaded', () => {
   const pencil = new Pencil();
 
   // Set up size button event listeners
   const sizeButtons = [
-    { id: "pencil-small", size: "Small" },
-    { id: "pencil-medium", size: "Medium" },
-    { id: "pencil-large", size: "Large" }
+    { id: 'pencil-small', size: 'Small' },
+    { id: 'pencil-medium', size: 'Medium' },
+    { id: 'pencil-large', size: 'Large' },
   ];
 
   sizeButtons.forEach(({ id, size }) => {
     const button = document.querySelector(`button#${id}`);
-    button?.addEventListener("click", () => {
+    button?.addEventListener('click', () => {
       pencil.setPencilSize(size);
     });
   });
 
   // Set initial active state based on saved stroke width
-  const savedStrokeWidth = localStorage.getItem("pencilStrokeWidth");
+  const savedStrokeWidth = localStorage.getItem('pencilStrokeWidth');
   if (savedStrokeWidth) {
     const sizeMap: Record<number, string> = {
-      5: "Small",
-      8: "Medium",
-      10: "Large"
+      5: 'Small',
+      8: 'Medium',
+      10: 'Large',
     };
     const size = sizeMap[parseInt(savedStrokeWidth, 10)];
     if (size) {

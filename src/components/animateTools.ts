@@ -1,5 +1,5 @@
 export function AnimateTools() {
-    return `
+  return `
         <div class="toolbox animateBox">
             <div class="animateTools">
                 <button id="FirstFrame" title="Go to First Frame">

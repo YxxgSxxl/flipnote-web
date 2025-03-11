@@ -1,36 +1,36 @@
-import paper from "paper";
+import paper from 'paper';
 
 // Services imports
-import "../cursor/cursorDisplay.ts";
-import "../cursor/cursorTools.ts";
+import '../cursor/cursorDisplay.ts';
+import '../cursor/cursorTools.ts';
 
 // Handlers imports
-import { initializeFrameSystem } from "../handlers/handleFrames.ts";
-import { setupToolsEvents } from "../handlers/handleTools.ts";
+import { initializeFrameSystem } from '../handlers/handleFrames.ts';
+import { setupToolsEvents } from '../handlers/handleTools.ts';
 import {
   setupAnimationsEvents,
   setupFrameControls,
   animationPlaying,
-  setupOnionSkinningControls
-} from "../handlers/handleAnimations.ts";
-import {setupExportEvents, preloadGifLibrary} from "../handlers/handleExport.ts";
+  setupOnionSkinningControls,
+} from '../handlers/handleAnimations.ts';
+import { setupExportEvents, preloadGifLibrary } from '../handlers/handleExport.ts';
 
 // Components imports
-import { AnimateTools } from "../../../components/animateTools.ts";
-import { DrawingTools } from "../../../components/drawingTools.ts";
+import { AnimateTools } from '../../../components/animateTools.ts';
+import { DrawingTools } from '../../../components/drawingTools.ts';
 
 // Paper.js status
-document.addEventListener("DOMContentLoaded", () => {
-  console.log("Paper.js status:", {
-    project: paper.project ? "loaded" : "not loaded",
-    view: paper.view ? "loaded" : "not loaded",
-    tools: paper.tools ? "loaded" : "not loaded",
+document.addEventListener('DOMContentLoaded', () => {
+  console.log('Paper.js status:', {
+    project: paper.project ? 'loaded' : 'not loaded',
+    view: paper.view ? 'loaded' : 'not loaded',
+    tools: paper.tools ? 'loaded' : 'not loaded',
   });
 });
 
 // Dans la fonction injectApp(), ajoutez l'appel à preloadGifLibrary
 export function injectApp() {
-  document.querySelector<HTMLDivElement>("#app")!.innerHTML = `
+  document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
         <main>        
             <div class="canvas-container">
                 <canvas id="canvas" width="600" height="400"></canvas>
@@ -85,13 +85,13 @@ function setupAnimationPreviewIndicator() {
 }
 
 function canvasInit() {
-  const canvas = document.querySelector<HTMLCanvasElement>("#canvas")!;
+  const canvas = document.querySelector<HTMLCanvasElement>('#canvas')!;
 
   paper.setup(canvas);
 
   initializeFrameSystem();
 
-  console.log("Canvas setup complete");
+  console.log('Canvas setup complete');
 }
 
 function forceUpdateFrameIndicator() {
