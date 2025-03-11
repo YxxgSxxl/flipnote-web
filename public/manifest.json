@@ -1,7 +1,7 @@
 {
   "name": "Flipnote App",
   "short_name": "Flipnote",
-  "description": "Une application d'animation de style Flipnote Studio",
+  "description": "Une application d'animation sur le web inspiré de FLipnote Studio",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#203548",
