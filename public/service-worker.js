@@ -36,7 +36,7 @@ const RESOURCES_TO_CACHE = [
     '/img/cursors/pointer.png',
     '/img/icons/icon-192x192.png',
     '/img/icons/icon-512x512.png',
-    '/icon.svg'
+    '/img/icon.svg'
 ];
 
 // Installation du service worker
