@@ -50,8 +50,6 @@ self.addEventListener('install', (event) => {
                 const criticalResources = [
                     '/lib/gif.js',
                     '/lib/gif.worker.js',
-                    // Assurez-vous que ce chemin est correct
-                    '/node_modules/paper/dist/paper-full.js'
                 ];
 
                 return Promise.all(
