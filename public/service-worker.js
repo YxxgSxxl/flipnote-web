@@ -1,5 +1,5 @@
 // Nom du cache pour stocker les ressources
-const CACHE_NAME = 'flipnote-cache-v1';
+const CACHE_NAME = 'flipnote-cache-v2'; // J'ai incrémenté le numéro de version
 
 // Liste des ressources à mettre en cache
 const RESOURCES_TO_CACHE = [
@@ -48,9 +48,10 @@ self.addEventListener('install', (event) => {
 
                 // D'abord, mettre en cache les ressources critiques
                 const criticalResources = [
-                    '/img/icons/export_32x32.png',
                     '/lib/gif.js',
-                    '/lib/gif.worker.js'
+                    '/lib/gif.worker.js',
+                    // Assurez-vous que ce chemin est correct
+                    '/node_modules/paper/dist/paper-full.js'
                 ];
 
                 return Promise.all(
@@ -80,6 +81,7 @@ self.addEventListener('activate', (event) => {
                 cacheNames.filter((cacheName) => {
                     return cacheName !== CACHE_NAME;
                 }).map((cacheName) => {
+                    console.log(`Suppression de l'ancien cache: ${cacheName}`);
                     return caches.delete(cacheName);
                 })
             );
@@ -97,18 +99,22 @@ self.addEventListener('fetch', (event) => {
 
     const url = new URL(event.request.url);
 
-    // Pour les pages HTML, les JS principaux et les fichiers liés aux contrôles d'animation, utiliser "Network First"
-    if (event.request.mode === 'navigate' ||
-        (event.request.headers.get('accept') || '').includes('text/html') ||
-        url.pathname.endsWith('.js') ||
-        url.pathname.includes('main.js') ||
-        url.pathname.includes('handleAnimations') ||
-        url.pathname.includes('handleFrames') ||
-        url.pathname.includes('animateTools')) {
+    // Pour TOUS les fichiers JavaScript, TOUJOURS utiliser "Network First"
+    // C'est la modification principale
+    if (url.pathname.endsWith('.js') ||
+        url.pathname.includes('.js') ||
+        url.pathname.includes('paper') ||
+        event.request.mode === 'navigate' ||
+        (event.request.headers.get('accept') || '').includes('text/html')) {
 
         event.respondWith(
-            fetch(event.request)
+            fetch(event.request, { cache: 'no-cache' }) // Force bypass du cache
                 .then(response => {
+                    // Ne pas mettre en cache les réponses non réussies
+                    if (!response || response.status !== 200) {
+                        return response;
+                    }
+
                     // Mettre en cache la nouvelle version
                     const responseToCache = response.clone();
                     caches.open(CACHE_NAME)
@@ -128,21 +134,23 @@ self.addEventListener('fetch', (event) => {
     // Gestion spéciale pour les fichiers GIF.js
     if (url.pathname.includes('/lib/gif.js') || url.pathname.includes('/lib/gif.worker.js')) {
         event.respondWith(
-            caches.match(event.request)
-                .then((cachedResponse) => {
-                    if (cachedResponse) {
-                        return cachedResponse;
+            fetch(event.request, { cache: 'no-cache' }) // Force bypass du cache
+                .then(response => {
+                    // Ne pas mettre en cache les réponses non réussies
+                    if (!response || response.status !== 200) {
+                        return response;
                     }
 
-                    return fetch(event.request)
-                        .then((networkResponse) => {
-                            const responseToCache = networkResponse.clone();
-                            caches.open(CACHE_NAME)
-                                .then((cache) => {
-                                    cache.put(event.request, responseToCache);
-                                });
-                            return networkResponse;
+                    // Mettre en cache la nouvelle version
+                    const responseToCache = response.clone();
+                    caches.open(CACHE_NAME)
+                        .then(cache => {
+                            cache.put(event.request, responseToCache);
                         });
+                    return response;
+                })
+                .catch(() => {
+                    return caches.match(event.request);
                 })
         );
         return;
@@ -159,6 +167,11 @@ self.addEventListener('fetch', (event) => {
 
                     return fetch(event.request)
                         .then((networkResponse) => {
+                            // Ne pas mettre en cache les réponses non réussies
+                            if (!networkResponse || networkResponse.status !== 200) {
+                                return networkResponse;
+                            }
+
                             const responseToCache = networkResponse.clone();
                             caches.open(CACHE_NAME)
                                 .then((cache) => {
